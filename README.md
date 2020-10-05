@@ -1,6 +1,8 @@
 # clothing-designer
 Final project for the IronHack bootcamp
 
+#### endpoints table
+
 Method |Path | Description 
 --- | --- | ---
 GET| / | Index
