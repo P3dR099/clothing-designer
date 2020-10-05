@@ -1,7 +1,7 @@
 # clothing-designer
 Final project for the IronHack bootcamp
 
-Method |Path | Descripction 
+Method |Path | Description 
 --- | --- | ---
 GET| / | Index
 GET| /?query |  Busqueda de prenda según el tag
