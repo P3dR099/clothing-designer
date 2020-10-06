@@ -14,7 +14,7 @@ const Canvas = props => {
 
     return (
         <div id="shirtDiv" className="page">
-            <img id="tshirtFacing" src={imgfont}></img>
+            <img id="tshirtFacing" src={imgfont} alt="camiseta de manga corta"></img>
             <div id="drawingArea" >
                 <canvas id="tcanvas" ref={canvasRef} {...props} className="hover"></canvas>
             </div>

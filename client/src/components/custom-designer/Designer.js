@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ScripTag from 'react-script-tag'
+//import ScripTag from 'react-script-tag'
 import Canvas from './canvas/Canvas'
 import './designer.css'
 import manInvisible from './img/invisibleman.jpg'
@@ -81,7 +81,7 @@ export default class Designer extends Component {
                         <div className="well">
                             <h3>Tee Styles</h3>
                             <select id="">
-                                <option value="1" value="selected">Short Sleeve Shirts</option>
+                                <option value="1">Short Sleeve Shirts</option>
                                 <option value="2">Long Sleeve Shirts</option>
                                 <option value="3">Hoodies</option>
                                 <option value="4">Tank tops</option>
@@ -126,7 +126,7 @@ export default class Designer extends Component {
                             </form>
                             <br />
                             <div id="avatarlist">
-                                <img style={{ 'cursor': 'pointer' }} className="img-polaroid" src={manInvisible} />
+                                <img style={{ 'cursor': 'pointer' }} className="img-polaroid" src={manInvisible} alt="invisibleman logo" />
                             </div>
                         </div>
                     </div>
