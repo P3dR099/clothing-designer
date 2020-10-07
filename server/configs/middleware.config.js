@@ -3,7 +3,8 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const cors = require('cors')
 
-const whitelist = [process.env.DOMAIN]
+
+const whitelist = [process.env.DOMAIN_REMOTE, process.env.DOMAIN_LOCAL]
 const corsOptions = {
     origin: (origin, cb) => {
         const originIsWhitelisted = whitelist.includes(origin)
