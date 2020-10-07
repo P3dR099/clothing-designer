@@ -1,4 +1,4 @@
-let canvas
+var canvas;
 var tshirts = new Array(); //prototype: [{style:'x',color:'white',front:'a',back:'b',price:{tshirt:'12.95',frontPrint:'4.99',backPrint:'4.99',total:'22.47'}}]
 var a;
 var b;
