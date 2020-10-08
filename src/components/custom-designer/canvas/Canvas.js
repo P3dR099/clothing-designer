@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react'
 import './canvas.css'
-import imgfont from '../img/crewFront.png'
 
 const Canvas = props => {
 
@@ -13,12 +12,7 @@ const Canvas = props => {
 
 
     return (
-        <div id="shirtDiv" className="page">
-            <img id="tshirtFacing" src={imgfont} alt="camiseta de manga corta"></img>
-            <div id="drawingArea" >
-                <canvas id="tcanvas" ref={canvasRef} {...props} className="hover"></canvas>
-            </div>
-        </div >
+        <canvas id="tcanvas" ref={canvasRef} {...props} className="hover"></canvas>
     )
 }
 
