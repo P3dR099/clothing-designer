@@ -4,13 +4,54 @@ import Canvas from './canvas/Canvas'
 import './designer.css'
 import manInvisible from './img/invisibleman.jpg'
 import michel from './img/michel.jpg'
+import tshirt from './img/crewFront.png'
+
 const fabric = window.fabric
 let canvas
 
 export default class Designer extends Component {
     constructor(props) {
         super(props)
-        this.state = { value: '' }
+        this.state = {
+            value: '',
+            typeShirt: ''
+        }
+    }
+
+    fabricText = (event, text) => {
+
+        event.preventDefault()
+        const textSample = new fabric.Text(text, {
+            left: fabric.util.getRandomInt(0, 200),
+            top: fabric.util.getRandomInt(0, 400),
+            fontFamily: 'helvetica',
+            angle: 0,
+            fill: '#000000',
+            scaleX: 0.5,
+            scaleY: 0.5,
+            fontWeight: '',
+            hasRotatingPoint: true
+        });
+        canvas.add(textSample);
+        canvas.item(canvas.item.length - 1).hasRotatingPoint = true;
+
+    }
+
+    fabricImg = (element, left, top, angle, width) => {
+
+        fabric.Image.fromURL(element, (image) => {
+            image.set({
+                left: left,
+                top: top,
+                angle: angle,
+                width: width,
+                padding: 10,
+                //  opacity: opacity,
+                hasRotatingPoint: true
+            })
+            image.scale(this.getRandomNum(1.1, 1.25)).setCoords()
+            canvas.add(image)
+        })
     }
 
 
@@ -35,7 +76,6 @@ export default class Designer extends Component {
 
     }
 
-
     handleColor = (color) => {
 
         document.querySelector("#shirtDiv").style.backgroundColor = color
@@ -50,32 +90,14 @@ export default class Designer extends Component {
     addText = (event) => {
 
         const { value } = this.state
-        event.preventDefault()
-        var textSample = new fabric.Text(value, {
-            left: fabric.util.getRandomInt(0, 200),
-            top: fabric.util.getRandomInt(0, 400),
-            fontFamily: 'helvetica',
-            angle: 0,
-            fill: '#000000',
-            scaleX: 0.5,
-            scaleY: 0.5,
-            fontWeight: '',
-            hasRotatingPoint: true
-        });
+        this.fabricText(event, value)
 
-        canvas.add(textSample);
-        canvas.item(canvas.item.length - 1).hasRotatingPoint = true;
-
-    }
-
-    getRandomNum = (min, max) => {
-
-        return Math.random() * (max - min) + min
     }
 
     addLogo = (event) => {
 
         const element = event.target
+        console.log(element.src)
         const offset = 50;
         const left = fabric.util.getRandomInt(0 + offset, 200 - offset);
         const top = fabric.util.getRandomInt(0 + offset, 400 - offset);
@@ -86,33 +108,64 @@ export default class Designer extends Component {
             return Math.random() * (max - min) + min;
         })(0.5, 1);
 
-        fabric.Image.fromURL(element.src, (image) => {
-            image.set({
-                left: left,
-                top: top,
-                angle: angle,
-                width: width,
-                padding: 10,
-                //  opacity: opacity,
-                hasRotatingPoint: true
-            })
-            image.scale(this.getRandomNum(1.1, 1.25)).setCoords()
-            canvas.add(image)
-        })
-        console.log(element)
+        this.fabricImg(element.src, left, top, angle, width)
+
 
     }
+
+    // onChangeShirt = (event) => {    /// POR HACER
+
+    //     canvas.clear()
+    //     const value = event.target.value
+    //     //this.setState({ typeShirt: event.target.value })
+    //     console.log(value)
+    //     console.log(canvas)
+    // }
+
+    changeTypeOfShirt = (event) => {
+
+        event.preventDefault()
+
+        console.log('HEEEEEEY', this.state.typeShirt)
+    }
+
+
+    handleInputImg = (event) => {
+
+        let readerImg
+        const file = event.target.files[0]
+        //console.log(document.querySelector('input[type=file]').files[0])
+
+
+        console.log(file)
+        //  console.log(file)
+
+        const reader = new FileReader()
+        if (file) {
+            readerImg = reader.readAsDataURL(file)
+        }
+        // Hay que leer img como url
+    }
+
+
+    getRandomNum = (min, max) => Math.random() * (max - min) + min
 
     render() {
 
         return (
             <div>
-                <Canvas width="200" height="400" />
+                <div id="shirtDiv" className="page">
+                    <img id="tshirtFacing" src={tshirt} alt="camiseta de manga corta"></img>
+                    <div id="drawingArea" >
+                        <Canvas width="200" height="400" />
+                    </div>
+                </div >
+
                 <div className="tab-content">
                     <div className="tab-pane active" id="tab1">
                         <div className="well">
                             <h3>Tee Styles</h3>
-                            <select id="">
+                            <select onChange={this.onChangeShirt} id="">
                                 <option value="1">Short Sleeve Shirts</option>
                                 <option value="2">Long Sleeve Shirts</option>
                                 <option value="3">Hoodies</option>
@@ -152,10 +205,21 @@ export default class Designer extends Component {
                     <div className="tab-pane" id="tab2">
                         <div className="well">
                             <form onSubmit={this.addText}>
-                                <input className="span2" id="text-string" type="text" onChange={this.handleTshirtText} value={this.state.value} />
-                                <input type="submit" name="submit" onSubmit={this.addText}></input>
+                                <div>
+                                    <input className="span2" id="text-string" type="text" onChange={this.handleTshirtText} value={this.state.value} />
+                                    <input type="submit" name="submit" onSubmit={this.addText}></input>
+                                </div>
+                                <br />
+                                <div>
+                                    <label htmlFor="field2">Imagen para poner en la camiseta</label>
+                                    <input name="imageInput" type="file" className="form-control" onChange={this.handleInputImg} />
+                                </div>
+
+                                <input type="image" name="submitImg" onSubmit={this.handleInputImg}></input>
+
                                 <hr />
                             </form>
+                            <br />
                             <br />
                             <div id="avatarlist">
                                 <img onClick={this.addLogo} style={{ 'cursor': 'pointer' }} className="img-polaroid" src={manInvisible} alt="invisibleman logo" />
@@ -166,7 +230,7 @@ export default class Designer extends Component {
                 </div>
 
 
-            </div>
+            </div >
         )
     }
 }
