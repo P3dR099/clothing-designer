@@ -57,15 +57,15 @@ DELETE | /shop/delete | Eliminar prenda del carrito
  ```
 .
 ├── ...
-├── components              
-│   ├── home           
-│   ├── navbar              
-│   ├── pages                 
-│   ├── footer
+├── components
+│   ├── custom-designer 
+│   ├── layout                        
+│   ├── pages
+|   ├── ...App.js
 |   └── ...               
 └── ...
  ```
- #### home / navbar / footer
+ #### layout
 ```
 .
 ├── ...
