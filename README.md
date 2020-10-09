@@ -1,6 +1,9 @@
 # clothing-designer
 Final project for the IronHack bootcamp
 
+## API Auth Documentation
+`https://documenter.getpostman.com/view/6677517/TVRkYnBP`
+
 #### endpoints table
 
 Method |Path | Description 
