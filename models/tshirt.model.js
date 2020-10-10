@@ -20,12 +20,15 @@ const tshirtSchema = new Schema({
     logo: {
         type: String,
         required: false
+    },
+
+    owner: {
+        type: Schema.Types.ObjectId,
+        rel: 'User'
     }
-
-
 }, {
     timestamps: true
 })
 
-const userSchema = mongoose.model('Tshirt', tshirtSchema)
-module.exports = User
+const Tshirt = mongoose.model('Tshirt', tshirtSchema)
+module.exports = Tshirt
