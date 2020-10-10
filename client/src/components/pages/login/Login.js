@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import authService from '../../../service/auth.service'
+import authService from '../../../services/auth.service'
 
 
 class Login extends Component {
@@ -30,12 +30,11 @@ class Login extends Component {
         this.authService
             .login(this.state)
             .then(response => {
-                console.log(this.props)
-
+                this.props.setTheUser(response.data)
+                this.props.history.push('/')
             })
-
+            .catch(err => console.log('Err:', { err }))
     }
-
 
     render() {
 
