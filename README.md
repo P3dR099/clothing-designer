@@ -1,6 +1,9 @@
 # clothing-designer
 Final project for the IronHack bootcamp
 
+## API Auth Documentation
+`https://documenter.getpostman.com/view/6677517/TVRkYnBP`
+
 #### endpoints table
 
 Method |Path | Description 
@@ -54,15 +57,15 @@ DELETE | /shop/delete | Eliminar prenda del carrito
  ```
 .
 ├── ...
-├── components              
-│   ├── home           
-│   ├── navbar              
-│   ├── pages                 
-│   ├── footer
+├── components
+│   ├── custom-designer 
+│   ├── layout                        
+│   ├── pages
+|   ├── ...App.js
 |   └── ...               
 └── ...
  ```
- #### home / navbar / footer
+ #### layout
 ```
 .
 ├── ...
@@ -89,6 +92,7 @@ DELETE | /shop/delete | Eliminar prenda del carrito
 ```
 ├── ...
 ├── custom-designer
+|	 ├── Canvas.js
 |	 ├── Designer.js
 |	 └── ...
 └── ...
