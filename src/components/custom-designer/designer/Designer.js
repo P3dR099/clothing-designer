@@ -1,10 +1,18 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 //import ScripTag from 'react-script-tag'
-import Canvas from './canvas/Canvas'
+import Canvas from '../canvas/Canvas'
 import './designer.css'
-import manInvisible from './img/invisibleman.jpg'
-import michel from './img/michel.jpg'
-import tshirt from './img/crewFront.png'
+import manInvisible from '../img/invisibleman.jpg'
+import michel from '../img/michel.jpg'
+import tshirt from '../img/crewFront.png'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+
+
+
 
 const fabric = window.fabric
 let canvas
@@ -13,7 +21,7 @@ export default class Designer extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            value: '',
+            text: '',
             typeShirt: ''
         }
     }
@@ -47,7 +55,10 @@ export default class Designer extends Component {
                 width: width,
                 padding: 10,
                 //  opacity: opacity,
-                hasRotatingPoint: true
+                hasRotatingPoint: true,
+                scaleX: 200 / 600,
+                scaleY: 400 / 800
+
             })
             image.scale(this.getRandomNum(1.1, 1.25)).setCoords()
             canvas.add(image)
@@ -84,13 +95,13 @@ export default class Designer extends Component {
     handleTshirtText = (event) => {
 
         const { value } = event.target
-        this.setState({ value: value })
+        this.setState({ text: value })
     }
 
     addText = (event) => {
 
-        const { value } = this.state
-        this.fabricText(event, value)
+        const { text } = this.state
+        this.fabricText(event, text)
 
     }
 
@@ -132,18 +143,16 @@ export default class Designer extends Component {
 
     handleInputImg = (event) => {
 
-        let readerImg
+        // let readerImg
         const file = event.target.files[0]
         //console.log(document.querySelector('input[type=file]').files[0])
 
-
-        console.log(file)
         //  console.log(file)
 
-        const reader = new FileReader()
-        if (file) {
-            readerImg = reader.readAsDataURL(file)
-        }
+        // const reader = new FileReader()
+        // if (file) {
+        //     readerImg = reader.readAsDataURL(file)
+        // }
         // Hay que leer img como url
     }
 
@@ -153,27 +162,19 @@ export default class Designer extends Component {
     render() {
 
         return (
-            <div>
-                <div id="shirtDiv" className="page">
-                    <img id="tshirtFacing" src={tshirt} alt="camiseta de manga corta"></img>
-                    <div id="drawingArea" >
-                        <Canvas width="200" height="400" />
-                    </div>
-                </div >
+            <Fragment>
+                <Container>
+                    <Row>
+                        <Col xs="auto" md="auto" className="page" id="shirtDiv">
+                            <div className='img-container'>
+                                <div id="drawingArea" >
+                                    <Canvas id="tcanvas" className="img-responsive" width="200px" height="400px" {...this.props} />
+                                </div>
+                                <img id="tshirtFacing" src={tshirt} alt="camiseta de manga corta"></img>
+                            </div>
+                        </Col >
 
-                <div className="tab-content">
-                    <div className="tab-pane active" id="tab1">
-                        <div className="well">
-                            <h3>Tee Styles</h3>
-                            <select onChange={this.onChangeShirt} id="">
-                                <option value="1">Short Sleeve Shirts</option>
-                                <option value="2">Long Sleeve Shirts</option>
-                                <option value="3">Hoodies</option>
-                                <option value="4">Tank tops</option>
-                            </select>
-                        </div>
-
-                        <div className="well">
+                        <Col xs="auto" md="auto" className="well">
                             <ul className="nav">
                                 <li className="color-preview" title="White" style={{ 'backgroundColor': '#fffff' }} onClick={() => this.handleColor('White')} ></li>
                                 <li className="color-preview" title="Gray" style={{ 'backgroundColor': '#f0f0f0' }} onClick={() => this.handleColor('Gray')}></li>
@@ -199,38 +200,49 @@ export default class Designer extends Component {
                                 <li className="color-preview" title="Cherry Red" style={{ 'backgroundColor': '#c50404' }} onClick={() => this.handleColor('rgb(197, 4, 4)')}>
                                 </li>
                             </ul>
-                        </div>
-                    </div>
+                            <br />
 
-                    <div className="tab-pane" id="tab2">
-                        <div className="well">
-                            <form onSubmit={this.addText}>
-                                <div>
-                                    <input className="span2" id="text-string" type="text" onChange={this.handleTshirtText} value={this.state.value} />
-                                    <input type="submit" name="submit" onSubmit={this.addText}></input>
-                                </div>
+                            <div className="well">
+                                <Form onSubmit={this.addText}>
+                                    <Row style={{ margin: 20 }}>
+                                        <label htmlFor="field2">Añadir texto</label>
+                                        <input className="span2" id="text-string" type="text" onChange={this.handleTshirtText} value={this.state.value} />
+                                        <Button variant="dark" type="submit" name="submit" onSubmit={this.addText}>Añadir</Button>
+                                    </Row>
+                                </Form>
+                            </div>
+                            <Row style={{ margin: 20 }}>
                                 <br />
-                                <div>
-                                    <label htmlFor="field2">Imagen para poner en la camiseta</label>
-                                    <input name="imageInput" type="file" className="form-control" onChange={this.handleInputImg} />
-                                </div>
-
-                                <input type="image" name="submitImg" onSubmit={this.handleInputImg}></input>
-
-                                <hr />
-                            </form>
-                            <br />
-                            <br />
-                            <div id="avatarlist">
+                                <input name="imageInput" type="file" className="" onChange={this.handleInputImg} />
+                            </Row>
+                            <Row id="avatarlist">
+                                <h3> Añade un logo</h3>
+                                <br />
+                                <br />
                                 <img onClick={this.addLogo} style={{ 'cursor': 'pointer' }} className="img-polaroid" src={manInvisible} alt="invisibleman logo" />
                                 <img onClick={this.addLogo} style={{ 'cursor': 'pointer', 'width': '85px' }} className="img-polaroid" src={michel} alt="miguel anguel pintura logo" />
-                            </div>
+                            </Row>
+                            <Button variant="dark" type="submit">Crear camiseta personalizada</Button>
+                        </Col>
+                    </Row>
+                </Container>
+
+                <div className="tab-content">
+                    <div className="tab-pane " id="tab1">
+                        <div className="well">
+                            <h3>Tee Styles</h3>
+                            <select onChange={this.onChangeShirt} id="">
+                                <option value="1">Short Sleeve Shirts</option>
+                                <option value="2">Long Sleeve Shirts</option>
+                                <option value="3">Hoodies</option>
+                                <option value="4">Tank tops</option>
+                            </select>
                         </div>
                     </div>
-                </div>
 
 
-            </div >
+                </div >
+            </Fragment >
         )
     }
 }

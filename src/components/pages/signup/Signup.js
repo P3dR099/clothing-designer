@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
-import authService from '../../../service/auth.service'
+import authService from '../../../services/auth.service'
 
 class Signup extends Component {
     constructor(props) {
@@ -21,6 +21,7 @@ class Signup extends Component {
 
     handleInputChange = e => {
         const { name, value } = e.target
+        console.log('HOLA')
         this.setState({ [name]: value })
     }
 
@@ -31,7 +32,8 @@ class Signup extends Component {
         this.authService
             .signup(this.state)
             .then(response => {
-                console.log(response)
+                this.props.sestTheUser(response.data)
+                this.props.history.push('/')
             })
             .catch(err => console.log('Error:', { err }))
     }
