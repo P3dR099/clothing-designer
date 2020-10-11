@@ -12,6 +12,11 @@ export default class HomePage extends Component {
                 <Link to="/designer">Diseñador</Link>
                 <br />
                 <Link to="/login">Login</Link>
+                <br />
+                <Link to="/designer/viewDesign">View Design</Link>
+                <br />
+                <Link to="/designer/ClothingList">Lista de prendas</Link>
+
             </Fragment>
         )
     }

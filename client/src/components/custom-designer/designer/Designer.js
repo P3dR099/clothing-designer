@@ -5,33 +5,38 @@ import './designer.css'
 import manInvisible from '../img/invisibleman.jpg'
 import michel from '../img/michel.jpg'
 import tshirt from '../img/crewFront.png'
+
+// Reactstrap
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
+//
+import designerService from '../../../services/designer.service'
 
-
-
-
-const fabric = window.fabric
-let canvas
+//let canvas
 
 export default class Designer extends Component {
     constructor(props) {
         super(props)
         this.state = {
             text: '',
-            typeShirt: ''
+            typeOfShirt: tshirt,
+            color: undefined,
+            logo: undefined
         }
+        this.canvas = window.canvas
+        this.fabric = window.fabric
+        this.designerService = new designerService()
     }
 
     fabricText = (event, text) => {
 
         event.preventDefault()
-        const textSample = new fabric.Text(text, {
-            left: fabric.util.getRandomInt(0, 200),
-            top: fabric.util.getRandomInt(0, 400),
+        const textSample = new this.fabric.Text(text, {
+            left: this.fabric.util.getRandomInt(0, 200),
+            top: this.fabric.util.getRandomInt(0, 400),
             fontFamily: 'helvetica',
             angle: 0,
             fill: '#000000',
@@ -40,14 +45,14 @@ export default class Designer extends Component {
             fontWeight: '',
             hasRotatingPoint: true
         });
-        canvas.add(textSample);
-        canvas.item(canvas.item.length - 1).hasRotatingPoint = true;
+        this.canvas.add(textSample);
+        this.canvas.item(this.canvas.item.length - 1).hasRotatingPoint = true;
 
     }
 
     fabricImg = (element, left, top, angle, width) => {
 
-        fabric.Image.fromURL(element, (image) => {
+        this.fabric.Image.fromURL(element, (image) => {
             image.set({
                 left: left,
                 top: top,
@@ -61,14 +66,15 @@ export default class Designer extends Component {
 
             })
             image.scale(this.getRandomNum(1.1, 1.25)).setCoords()
-            canvas.add(image)
+            this.canvas.add(image)
         })
     }
 
 
     componentDidMount = () => {
 
-        canvas = new fabric.Canvas('tcanvas', {
+        //   console.log(this.canvas)
+        this.canvas = new this.fabric.Canvas('tcanvas', {
             hoverCursor: 'pointer',
             selection: true,
             selectionBorderColor: 'blue'
@@ -87,19 +93,24 @@ export default class Designer extends Component {
 
     }
 
-    handleColor = (color) => {
+    changeColor = (event) => {
 
-        document.querySelector("#shirtDiv").style.backgroundColor = color
+        this.setState({ color: event })
+        document.querySelector("#shirtDiv").style.backgroundColor = event
     }
+
 
     handleTshirtText = (event) => {
 
         const { value } = event.target
         this.setState({ text: value })
+
     }
+
 
     addText = (event) => {
 
+        event.preventDefault()
         const { text } = this.state
         this.fabricText(event, text)
 
@@ -110,14 +121,16 @@ export default class Designer extends Component {
         const element = event.target
         console.log(element.src)
         const offset = 50;
-        const left = fabric.util.getRandomInt(0 + offset, 200 - offset);
-        const top = fabric.util.getRandomInt(0 + offset, 400 - offset);
-        const angle = fabric.util.getRandomInt(-20, 40);
-        const width = fabric.util.getRandomInt(30, 50);
+        const left = this.fabric.util.getRandomInt(0 + offset, 200 - offset);
+        const top = this.fabric.util.getRandomInt(0 + offset, 400 - offset);
+        const angle = this.fabric.util.getRandomInt(-20, 40);
+        const width = this.fabric.util.getRandomInt(30, 50);
 
         var opacity = ((min, max) => {
             return Math.random() * (max - min) + min;
         })(0.5, 1);
+
+        this.setState({ logo: element.src })
 
         this.fabricImg(element.src, left, top, angle, width)
 
@@ -156,6 +169,17 @@ export default class Designer extends Component {
         // Hay que leer img como url
     }
 
+    saveShirt = () => {
+        // console.log(this.state)
+
+        this.designerService
+            .addNewShirt(this.state)
+            .then((res) => console.log(res))
+            .catch((err) => console.log('ERROR: ', err))
+
+
+    }
+
 
     getRandomNum = (min, max) => Math.random() * (max - min) + min
 
@@ -176,28 +200,28 @@ export default class Designer extends Component {
 
                         <Col xs="auto" md="auto" className="well">
                             <ul className="nav">
-                                <li className="color-preview" title="White" style={{ 'backgroundColor': '#fffff' }} onClick={() => this.handleColor('White')} ></li>
-                                <li className="color-preview" title="Gray" style={{ 'backgroundColor': '#f0f0f0' }} onClick={() => this.handleColor('Gray')}></li>
+                                <li className="color-preview" title="White" style={{ 'backgroundColor': '#fffff' }} onClick={() => this.changeColor('White')} ></li>
+                                <li className="color-preview" title="Gray" style={{ 'backgroundColor': '#f0f0f0' }} onClick={() => this.changeColor('Gray')}></li>
 
-                                <li className="color-preview" title="Heather Orange" style={{ 'backgroundColor': 'Orange' }} onClick={() => this.handleColor('Orange')}></li>
-                                <li className="color-preview" title="Salmon" style={{ 'backgroundColor': '#eead91' }} onClick={() => this.handleColor('Salmon')}></li>
+                                <li className="color-preview" title="Heather Orange" style={{ 'backgroundColor': 'Orange' }} onClick={() => this.changeColor('Orange')}></li>
+                                <li className="color-preview" title="Salmon" style={{ 'backgroundColor': '#eead91' }} onClick={() => this.changeColor('Salmon')}></li>
 
-                                <li className="color-preview" title="Dark Chocolate" style={{ 'backgroundColor': '#382d21' }} onClick={() => this.handleColor('rgb(56, 45, 33)')}></li>
-                                <li className="color-preview" title="Citrus Yellow" style={{ 'backgroundColor': '#faef93' }} onClick={() => this.handleColor('rgb(250, 239, 147)')}></li>
-                                <li className="color-preview" title="Avocado" style={{ 'backgroundColor': '#aeba5e' }} onClick={() => this.handleColor('rgb(174, 186, 94)')}>
+                                <li className="color-preview" title="Dark Chocolate" style={{ 'backgroundColor': '#382d21' }} onClick={() => this.changeColor('rgb(56, 45, 33)')}></li>
+                                <li className="color-preview" title="Citrus Yellow" style={{ 'backgroundColor': '#faef93' }} onClick={() => this.changeColor('rgb(250, 239, 147)')}></li>
+                                <li className="color-preview" title="Avocado" style={{ 'backgroundColor': '#aeba5e' }} onClick={() => this.changeColor('rgb(174, 186, 94)')}>
                                 </li>
-                                <li className="color-preview" title="Kiwi" style={{ 'backgroundColor': '#8aa140' }} onClick={() => this.handleColor('rgb(138, 161, 64)')} ></li>
-                                <li className="color-preview" title="Irish Green" style={{ 'backgroundColor': '#1f6522' }} onClick={() => this.handleColor('rgb(31, 101, 34 )')}>
+                                <li className="color-preview" title="Kiwi" style={{ 'backgroundColor': '#8aa140' }} onClick={() => this.changeColor('rgb(138, 161, 64)')} ></li>
+                                <li className="color-preview" title="Irish Green" style={{ 'backgroundColor': '#1f6522' }} onClick={() => this.changeColor('rgb(31, 101, 34 )')}>
                                 </li>
-                                <li className="color-preview" title="Scrub Green" style={{ 'backgroundColor': '#13afa2' }} onClick={() => this.handleColor('rgb(19, 175, 162 )')} >
+                                <li className="color-preview" title="Scrub Green" style={{ 'backgroundColor': '#13afa2' }} onClick={() => this.changeColor('rgb(19, 175, 162 )')} >
                                 </li>
-                                <li className="color-preview" title="Teal Ice" style={{ 'backgroundColor': '#b8d5d7' }} onClick={() => this.handleColor('rgb( 184, 213, 215)')} >
+                                <li className="color-preview" title="Teal Ice" style={{ 'backgroundColor': '#b8d5d7' }} onClick={() => this.changeColor('rgb( 184, 213, 215)')} >
                                 </li>
-                                <li className="color-preview" title="Heather Sapphire" style={{ 'backgroundColor': '#15aeda' }} onClick={() => this.handleColor('rgb( 21, 174, 218 )')}></li>
-                                <li className="color-preview" title="Sky" style={{ 'backgroundColor': '#a5def8' }} onClick={() => this.handleColor('rgb(165, 222, 248)')} ></li>
-                                <li className="color-preview" title="Antique Sapphire" style={{ 'backgroundColor': '#0f77c0' }} onClick={() => this.handleColor('rgb(15, 119, 192)')}></li>
-                                <li className="color-preview" title="Heather Navy" style={{ 'backgroundColor': '#3469b7' }} onClick={() => this.handleColor('rgb(52, 105, 183)')}></li>
-                                <li className="color-preview" title="Cherry Red" style={{ 'backgroundColor': '#c50404' }} onClick={() => this.handleColor('rgb(197, 4, 4)')}>
+                                <li className="color-preview" title="Heather Sapphire" style={{ 'backgroundColor': '#15aeda' }} onClick={() => this.changeColor('rgb( 21, 174, 218 )')}></li>
+                                <li className="color-preview" title="Sky" style={{ 'backgroundColor': '#a5def8' }} onClick={() => this.changeColor('rgb(165, 222, 248)')} ></li>
+                                <li className="color-preview" title="Antique Sapphire" style={{ 'backgroundColor': '#0f77c0' }} onClick={() => this.changeColor('rgb(15, 119, 192)')}></li>
+                                <li className="color-preview" title="Heather Navy" style={{ 'backgroundColor': '#3469b7' }} onClick={() => this.changeColor('rgb(52, 105, 183)')}></li>
+                                <li className="color-preview" title="Cherry Red" style={{ 'backgroundColor': '#c50404' }} onClick={() => this.changeColor('rgb(197, 4, 4)')}>
                                 </li>
                             </ul>
                             <br />
@@ -207,7 +231,7 @@ export default class Designer extends Component {
                                     <Row style={{ margin: 20 }}>
                                         <label htmlFor="field2">Añadir texto</label>
                                         <input className="span2" id="text-string" type="text" onChange={this.handleTshirtText} value={this.state.value} />
-                                        <Button variant="dark" type="submit" name="submit" onSubmit={this.addText}>Añadir</Button>
+                                        <Button variant="dark" type="submit" name="submit">Añadir</Button>
                                     </Row>
                                 </Form>
                             </div>
@@ -222,7 +246,7 @@ export default class Designer extends Component {
                                 <img onClick={this.addLogo} style={{ 'cursor': 'pointer' }} className="img-polaroid" src={manInvisible} alt="invisibleman logo" />
                                 <img onClick={this.addLogo} style={{ 'cursor': 'pointer', 'width': '85px' }} className="img-polaroid" src={michel} alt="miguel anguel pintura logo" />
                             </Row>
-                            <Button variant="dark" type="submit">Crear camiseta personalizada</Button>
+                            <Button onClick={this.saveShirt} variant="dark" type="submit">Crear camiseta personalizada</Button>
                         </Col>
                     </Row>
                 </Container>

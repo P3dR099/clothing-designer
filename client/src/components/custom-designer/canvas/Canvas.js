@@ -17,4 +17,4 @@ const Canvas = props => {
     )
 }
 
-export default Canvas
+export default Canvas 

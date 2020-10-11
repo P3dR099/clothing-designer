@@ -2,9 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const tshirtSchema = new Schema({
-    imageShirt: {
+
+    typeOfShirt: {
         type: String,
-        required: true,
+        required: true
     },
     color: {
         type: String,
