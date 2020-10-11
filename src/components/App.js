@@ -1,13 +1,18 @@
 import React, { Component, Fragment } from 'react';
+
 import Designer from './custom-designer/designer/Designer'
 import Home from '../components/layout/home/HomePage'
-import authService from '../services/auth.service'
 import NavBar from '../components/layout/navbar/NavBar'
+
 import Login from './pages/login/Login'
 import Signup from './pages/signup/Signup'
+import ViewShirt from './pages/showClothing/ViewShirt'
 import { Route } from 'react-router-dom'
-import 'bootstrap/dist/css/bootstrap.css'
+import ClothingList from '../components/pages/clothingList/ClothingList'
+
+import authService from '../services/auth.service'
 import '../App.css';
+import 'bootstrap/dist/css/bootstrap.css'
 
 
 class App extends Component {
@@ -39,9 +44,11 @@ class App extends Component {
                 <NavBar />
                 <div className="App">
                     <Route exact path="/" render={(props) => <Home />} />
-                    <Route exact path="/designer" render={(props) => <Designer />} />
                     <Route path="/login" render={(props) => <Login setTheUser={this.setTheUser}  {...props} />} />
                     <Route path="/signup" render={(props) => <Signup setTheUser={this.setTheUser} {...props} />} />
+                    <Route exact path="/designer" render={() => <Designer />} />
+                    <Route exact path="/designer/ClothingList" render={(props) => < ClothingList {...props} />} />
+                    <Route exact path="/designer/viewDesign" render={(props) => < ViewShirt {...props} />} />
                 </div>
             </Fragment>
 
