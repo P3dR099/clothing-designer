@@ -24,27 +24,33 @@ export default class Designer extends Component {
             text: '',
             typeOfShirt: tshirt,
             color: undefined,
-            logo: undefined
+            logo: undefined,
+            user: this.props.loggedInUser ? this.props.loggedInUser._id : '',
+            left: 100,
+            top: 200
         }
         this.canvas = window.canvas
         this.fabric = window.fabric
         this.designerService = new designerService()
     }
 
-    fabricText = (event, text) => {
+    fabricText = (event, text, leftRandom, topRandom) => {
 
+        console.log(this.fabric.Textbox)
         event.preventDefault()
-        const textSample = new this.fabric.Text(text, {
-            left: this.fabric.util.getRandomInt(0, 200),
-            top: this.fabric.util.getRandomInt(0, 400),
+        const textSample = new this.fabric.Textbox(text, {
+            left: leftRandom,
+            top: topRandom,
             fontFamily: 'helvetica',
             angle: 0,
             fill: '#000000',
-            scaleX: 0.5,
-            scaleY: 0.5,
+            scaleX: 0.7,
+            scaleY: 0.7,
             fontWeight: '',
             hasRotatingPoint: true
         });
+
+        console.log(textSample)
         this.canvas.add(textSample);
         this.canvas.item(this.canvas.item.length - 1).hasRotatingPoint = true;
 
@@ -80,6 +86,8 @@ export default class Designer extends Component {
             selectionBorderColor: 'blue'
         });
 
+        this.saveShirt()
+
         //     canvas.on({
         //         'object:moving': function (e) {
         //             e.target.opacity = 0.5;
@@ -107,12 +115,19 @@ export default class Designer extends Component {
 
     }
 
-
     addText = (event) => {
 
         event.preventDefault()
         const { text } = this.state
-        this.fabricText(event, text)
+
+        this.setState({ left: Math.floor(Math.random() * 201) })
+        this.setState({ top: Math.floor(Math.random() * 401) })
+
+
+        console.log('\nleft', this.state.left)
+        console.log('\ntop', this.state.top)
+
+        this.fabricText(event, text, this.state.left, this.state.top)
 
     }
 
@@ -150,27 +165,26 @@ export default class Designer extends Component {
 
         event.preventDefault()
 
-        console.log('HEEEEEEY', this.state.typeShirt)
     }
 
 
-    handleInputImg = (event) => {
+    // handleInputImg = (event) => {
 
-        // let readerImg
-        const file = event.target.files[0]
-        //console.log(document.querySelector('input[type=file]').files[0])
+    //     // let readerImg
+    //     const file = event.target.files[0]
+    //     //console.log(document.querySelector('input[type=file]').files[0])
 
-        //  console.log(file)
+    //     //  console.log(file)
 
-        // const reader = new FileReader()
-        // if (file) {
-        //     readerImg = reader.readAsDataURL(file)
-        // }
-        // Hay que leer img como url
-    }
+    //     // const reader = new FileReader()
+    //     // if (file) {
+    //     //     readerImg = reader.readAsDataURL(file)
+    //     // }
+    //     // Hay que leer img como url
+    // }
 
     saveShirt = () => {
-        // console.log(this.state)
+        console.log(this.state)
 
         this.designerService
             .addNewShirt(this.state)
@@ -192,7 +206,7 @@ export default class Designer extends Component {
                         <Col xs="auto" md="auto" className="page" id="shirtDiv">
                             <div className='img-container'>
                                 <div id="drawingArea" >
-                                    <Canvas id="tcanvas" className="img-responsive" width="200px" height="400px" {...this.props} />
+                                    <Canvas id="tcanvas" className="img-responsive" width="200px" height="400px" />
                                 </div>
                                 <img id="tshirtFacing" src={tshirt} alt="camiseta de manga corta"></img>
                             </div>

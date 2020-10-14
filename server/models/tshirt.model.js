@@ -10,7 +10,8 @@ const tshirtSchema = new Schema({
     color: {
         type: String,
         required: true,
-        minlength: 8
+        minlength: 2,
+        default: 'rgb(250, 239, 147)'
     },
 
     text: {
@@ -23,9 +24,10 @@ const tshirtSchema = new Schema({
         required: false
     },
 
-    owner: {
+    user: {
         type: Schema.Types.ObjectId,
-        rel: 'User'
+        rel: 'User',
+        required: true
     }
 }, {
     timestamps: true

@@ -1,14 +1,25 @@
-const { response } = require('express')
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
+const { Passport } = require('passport/lib')
 
 const Tshirt = require('../models/tshirt.model')
 // Endpoints
 
+const checkLoggedIn = (req, res, next) => req.isAuthenticated() ? next() : res.render('auth/login', { errorMsg: 'Desautorizado, incia sesión para continuar' })
+//const checkRole = rolesToCheck => (req, res, next) => req.isAuthenticated() && rolesToCheck.includes(req.user.role) ? next() : res.render('auth/login', { errorMsg: 'Desautorizado, no tienes permisos para ver eso.' })
+
+router.get('/viewMyShirts/:user_id', (req, res, next) => {
+
+    Tshirt.find({ user: req.params.user_id })
+        .then(response => res.json(response))
+        .catch(err => console.log(err))
+
+})
 
 router.get('/viewOneShirt/:shirt_id', (req, res) => {
 
+    console.log(req.user)
     if (!mongoose.Types.ObjectId.isValid(req.params.shirt_id)) {
         res.status(400).json({ message: 'Specified id is not valid' })
         return
@@ -19,13 +30,7 @@ router.get('/viewOneShirt/:shirt_id', (req, res) => {
         .catch(err => console.log(err))
 })
 
-router.get('/viewAllClothing', (req, res, next) => {
 
-    Tshirt.find()
-        .then(response => res.json(response))
-        .catch(err => console.log({ err }))
-
-})
 
 router.post('/newTshirtCustom', (req, res, next) => {
 
@@ -34,13 +39,12 @@ router.post('/newTshirtCustom', (req, res, next) => {
     const { logo } = req.body
     const { color } = req.body
 
-    Tshirt.create({ text, typeOfShirt, logo, color })
-        .then(res => console.log(res))
+    Tshirt.create({ text, typeOfShirt, logo, color, user: req.body.user })
+        .then(response => res.json(response))
         .catch(err => console.log('err', { err }))
 
 
     // })
-    console.log('BODY', text)
     // res.status(200).json('holaaa')
 })
 

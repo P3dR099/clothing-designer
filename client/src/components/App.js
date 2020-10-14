@@ -6,9 +6,9 @@ import NavBar from '../components/layout/navbar/NavBar'
 
 import Login from './pages/login/Login'
 import Signup from './pages/signup/Signup'
-import ViewShirt from './pages/showClothing/ViewShirt'
+// import ViewShirt from './pages/showClothing/ViewShirt'
 import { Route } from 'react-router-dom'
-import ClothingList from '../components/pages/clothingList/ClothingList'
+import ViewMyShirts from '../components/pages/clothingList/ViewMyShirts'
 
 import authService from '../services/auth.service'
 import '../App.css';
@@ -32,7 +32,11 @@ class App extends Component {
     fetchUser = () => {
         this.authService
             .isLoggedIn()
-            .then(response => this.setState({ loggedInUser: response.data }))
+            .then(response => {
+                this.setState({ loggedInUser: response.data })
+                console.log(this.state)
+
+            })
             .catch(err => this.setState({ loggedInUser: null }))
 
     }
@@ -43,12 +47,12 @@ class App extends Component {
             <Fragment>
                 <NavBar />
                 <div className="App">
-                    <Route exact path="/" render={(props) => <Home />} />
+                    <Route exact path="/" render={(props) => <Home loggedInUser={this.state.loggedInUser} {...props} />} />
                     <Route path="/login" render={(props) => <Login setTheUser={this.setTheUser}  {...props} />} />
                     <Route path="/signup" render={(props) => <Signup setTheUser={this.setTheUser} {...props} />} />
-                    <Route exact path="/designer" render={() => <Designer />} />
-                    <Route exact path="/designer/ClothingList" render={(props) => < ClothingList {...props} />} />
-                    <Route exact path="/designer/viewDesign" render={(props) => < ViewShirt {...props} />} />
+                    <Route exact path="/designer" render={(props) => <Designer loggedInUser={this.state.loggedInUser} {...props} />} />
+                    <Route exact path="/designer/viewMyShirts/:user_id" render={(props) => < ViewMyShirts loggedInUser={this.state.loggedInUser} {...props} />} />
+                    {/* <Route exact path="/designer/viewDesign" render={(props) => < ViewShirt {...props} />} /> */}
                 </div>
             </Fragment>
 
