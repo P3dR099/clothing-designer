@@ -11,9 +11,10 @@ export default class designService {
     }
 
     addNewShirt = text => this.api.post('/newTshirtCustom', text)
-    getAllClothing = text => this.api.get('/viewAllClothing', text)
-    viewMyShirts = (val) => this.api.get(`/viewMyShirts/${val}`)
-
+    //  getAllClothing = text => this.api.get('/viewAllClothing', text)
+    viewMyShirts = id_user => this.api.get(`/viewMyShirts/${id_user}`)
+    getOneShirt = id_shirt => this.api.get(`/viewShirt/${id_shirt}`)
+    deleteOneShirt = id_shirt => this.api.delete(`/deleteShirt/${id_shirt}`)
     //    isLoggedIn = user => this.api.get('/loggedin', user)
 
 }
