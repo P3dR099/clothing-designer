@@ -18,9 +18,9 @@ export default class HomePage extends Component {
                 <br />
                 <Link to="/login">Login</Link>
                 <br />
-                <Link to={`/designer/viewMyShirts/${this.state.user}`} >View My Shirts</Link>
+                <Link to={`/designer/viewShirt/${this.state.user}`} >View My Shirts</Link>
                 <br />
-                <Link to="/designer/ClothingList">Lista de prendas</Link>
+                <Link to={`/designer/ClothingList/${this.state.user}`}>Lista de prendas</Link>
 
             </Fragment>
         )

@@ -26,42 +26,42 @@ export default class Designer extends Component {
             color: undefined,
             logo: undefined,
             user: this.props.loggedInUser ? this.props.loggedInUser._id : '',
-            left: 100,
-            top: 200
+            //left: Math.floor(Math.random() * 201),
+            // top: Math.floor(Math.random() * 401)
+            left: 80,
+            top: 100
         }
+
         this.canvas = window.canvas
         this.fabric = window.fabric
         this.designerService = new designerService()
     }
 
-    fabricText = (event, text, leftRandom, topRandom) => {
+    fabricText = (event, text, leftText, topText) => {
 
-        console.log(this.fabric.Textbox)
         event.preventDefault()
-        const textSample = new this.fabric.Textbox(text, {
-            left: leftRandom,
-            top: topRandom,
+        const textSample = new this.fabric.Text(text, {
+            left: leftText,
+            top: topText,
             fontFamily: 'helvetica',
             angle: 0,
             fill: '#000000',
-            scaleX: 0.7,
-            scaleY: 0.7,
+            scaleX: 0.5,
+            scaleY: 0.5,
             fontWeight: '',
             hasRotatingPoint: true
         });
-
-        console.log(textSample)
         this.canvas.add(textSample);
         this.canvas.item(this.canvas.item.length - 1).hasRotatingPoint = true;
 
     }
 
-    fabricImg = (element, left, top, angle, width) => {
+    fabricImg = (element, leftImg, topImg, angle, width) => {
 
         this.fabric.Image.fromURL(element, (image) => {
             image.set({
-                left: left,
-                top: top,
+                left: leftImg,
+                top: topImg,
                 angle: angle,
                 width: width,
                 padding: 10,
@@ -120,26 +120,26 @@ export default class Designer extends Component {
         event.preventDefault()
         const { text } = this.state
 
-        this.setState({ left: Math.floor(Math.random() * 201) })
-        this.setState({ top: Math.floor(Math.random() * 401) })
+        // this.setState({ left: Math.floor(Math.random() * 201) })
+        // this.setState({ top: Math.floor(Math.random() * 401) })
 
 
-        console.log('\nleft', this.state.left)
-        console.log('\ntop', this.state.top)
+        const parseTo = parseInt(this.state.top)
+        console.log(parseTo)
+        console.log('left', this.state.left, ' top ', parseTo)
 
-        this.fabricText(event, text, this.state.left, this.state.top)
+        this.fabricText(event, text, this.state.left, parseTo)
 
     }
 
     addLogo = (event) => {
 
         const element = event.target
-        console.log(element.src)
         const offset = 50;
-        const left = this.fabric.util.getRandomInt(0 + offset, 200 - offset);
-        const top = this.fabric.util.getRandomInt(0 + offset, 400 - offset);
-        const angle = this.fabric.util.getRandomInt(-20, 40);
-        const width = this.fabric.util.getRandomInt(30, 50);
+        const leftLogo = this.fabric.util.getRandomInt(0 + offset, 200 - offset);
+        const topLogo = this.fabric.util.getRandomInt(0 + offset, 400 - offset);
+        const angle = this.fabric.util.getRandomInt(-20, 60);
+        const width = this.fabric.util.getRandomInt(100, 200);
 
         var opacity = ((min, max) => {
             return Math.random() * (max - min) + min;
@@ -147,7 +147,7 @@ export default class Designer extends Component {
 
         this.setState({ logo: element.src })
 
-        this.fabricImg(element.src, left, top, angle, width)
+        this.fabricImg(element.src, leftLogo, topLogo, angle, width)
 
 
     }
@@ -184,18 +184,27 @@ export default class Designer extends Component {
     // }
 
     saveShirt = () => {
-        console.log(this.state)
 
         this.designerService
             .addNewShirt(this.state)
             .then((res) => console.log(res))
             .catch((err) => console.log('ERROR: ', err))
-
-
     }
 
 
     getRandomNum = (min, max) => Math.random() * (max - min) + min
+
+
+    handlePositionTextSubmit = (event) => {
+        event.preventDefault()
+        console.log('left: ', this.state.left)
+        console.log('top: ', this.state)
+    }
+
+    handletextPosition = (event) => {
+
+        this.setState({ top: event.target.value })
+    }
 
     render() {
 
@@ -206,7 +215,7 @@ export default class Designer extends Component {
                         <Col xs="auto" md="auto" className="page" id="shirtDiv">
                             <div className='img-container'>
                                 <div id="drawingArea" >
-                                    <Canvas id="tcanvas" className="img-responsive" width="200px" height="400px" />
+                                    <Canvas id="tcanvas" className="img-responsive" width="200px" height="400px" {...this.props} />
                                 </div>
                                 <img id="tshirtFacing" src={tshirt} alt="camiseta de manga corta"></img>
                             </div>
@@ -239,6 +248,18 @@ export default class Designer extends Component {
                                 </li>
                             </ul>
                             <br />
+                            <label>
+                                Posicion del text en la camiseta:
+                                        <select value={this.state.top} onChange={this.handletextPosition}>
+                                    <option value={100} name="200">Pecho</option>
+                                    <option value={65} name="335">Cintura</option>
+                                    <option value={170} name="370">Cadera</option>
+                                    <option value={300} name="7">Cadera</option>
+                                </select>
+                            </label>
+
+
+
 
                             <div className="well">
                                 <Form onSubmit={this.addText}>
@@ -248,6 +269,7 @@ export default class Designer extends Component {
                                         <Button variant="dark" type="submit" name="submit">Añadir</Button>
                                     </Row>
                                 </Form>
+
                             </div>
                             <Row style={{ margin: 20 }}>
                                 <br />
@@ -277,8 +299,6 @@ export default class Designer extends Component {
                             </select>
                         </div>
                     </div>
-
-
                 </div >
             </Fragment >
         )
