@@ -4,7 +4,7 @@ export default class designService {
 
     constructor() {
         this.api = axios.create({
-            baseURL: 'http://localhost:5000/api',
+            baseURL: 'https://designex-server.herokuapp.com/api',
             //withCredentials: true
         })
 

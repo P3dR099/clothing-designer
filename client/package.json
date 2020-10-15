@@ -16,7 +16,7 @@
         "react-scripts": "3.4.3"
     },
     "scripts": {
-        "start": "REACT_APP_API_URL=http://localhost:5000/api react-scripts start",
+        "start": "REACT_APP_API_URL=https://designex-server.herokuapp.com/api react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
