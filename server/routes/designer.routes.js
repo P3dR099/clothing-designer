@@ -37,7 +37,7 @@ router.post('/newTshirtCustom', (req, res, next) => {
 
     Tshirt.create(req.body, { typeOfShirt, user: req.body.user })
         .then(response => res.json(response))
-        .catch(err => res.json({ err }))
+        .catch(err => console.log(err))
 })
 
 router.delete('/deleteShirt/:shirt_id', (req, res) => {

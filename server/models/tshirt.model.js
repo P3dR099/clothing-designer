@@ -28,7 +28,28 @@ const tshirtSchema = new Schema({
         type: Schema.Types.ObjectId,
         rel: 'User',
         required: true
+    },
+
+    leftText: {
+        type: Number,
+        required: false
+    },
+
+    topText: {
+        type: Number,
+        required: false
+    },
+
+    leftImg: {
+        type: Number,
+        required: false
+    },
+
+    topImg: {
+        type: Number,
+        required: false
     }
+
 }, {
     timestamps: true
 })
