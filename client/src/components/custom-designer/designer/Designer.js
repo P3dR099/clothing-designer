@@ -12,10 +12,8 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
-//
-import designerService from '../../../services/designer.service'
 
-//let canvas
+import designerService from '../../../services/designer.service'
 
 export default class Designer extends Component {
     constructor(props) {
@@ -26,10 +24,10 @@ export default class Designer extends Component {
             color: undefined,
             logo: undefined,
             user: this.props.loggedInUser ? this.props.loggedInUser._id : '',
-            //left: Math.floor(Math.random() * 201),
-            // top: Math.floor(Math.random() * 401)
-            left: 80,
-            top: 100
+            leftText: 70,
+            topText: 100,
+            topImg: 100,
+            leftImg: 100
         }
 
         this.canvas = window.canvas
@@ -51,9 +49,9 @@ export default class Designer extends Component {
             fontWeight: '',
             hasRotatingPoint: true
         });
+        console.log(textSample)
         this.canvas.add(textSample);
         this.canvas.item(this.canvas.item.length - 1).hasRotatingPoint = true;
-
     }
 
     fabricImg = (element, leftImg, topImg, angle, width) => {
@@ -79,14 +77,11 @@ export default class Designer extends Component {
 
     componentDidMount = () => {
 
-        //   console.log(this.canvas)
         this.canvas = new this.fabric.Canvas('tcanvas', {
             hoverCursor: 'pointer',
             selection: true,
             selectionBorderColor: 'blue'
         });
-
-        this.saveShirt()
 
         //     canvas.on({
         //         'object:moving': function (e) {
@@ -98,7 +93,6 @@ export default class Designer extends Component {
         //         //           'object:selected': onObjectSelected,
         //         //           'selection:cleared': onSelectedCleared
         //     });
-
     }
 
     changeColor = (event) => {
@@ -107,29 +101,19 @@ export default class Designer extends Component {
         document.querySelector("#shirtDiv").style.backgroundColor = event
     }
 
-
     handleTshirtText = (event) => {
 
         const { value } = event.target
         this.setState({ text: value })
-
     }
 
     addText = (event) => {
 
         event.preventDefault()
         const { text } = this.state
-
-        // this.setState({ left: Math.floor(Math.random() * 201) })
-        // this.setState({ top: Math.floor(Math.random() * 401) })
-
-
-        const parseTo = parseInt(this.state.top)
-        console.log(parseTo)
-        console.log('left', this.state.left, ' top ', parseTo)
-
-        this.fabricText(event, text, this.state.left, parseTo)
-
+        const { leftText } = this.state
+        const parseTo = parseInt(this.state.topText)
+        this.fabricText(event, text, leftText, parseTo)
     }
 
     addLogo = (event) => {
@@ -146,42 +130,20 @@ export default class Designer extends Component {
         })(0.5, 1);
 
         this.setState({ logo: element.src })
-
-        this.fabricImg(element.src, leftLogo, topLogo, angle, width)
-
-
+        this.fabricImg(element.src, 53, 68, 0, 100)
+        console.log('-left ->', leftLogo, '--- top ->', topLogo)
     }
 
-    // onChangeShirt = (event) => {    /// POR HACER
+    deleteLogo = () => {
 
-    //     canvas.clear()
-    //     const value = event.target.value
-    //     //this.setState({ typeShirt: event.target.value })
-    //     console.log(value)
-    //     console.log(canvas)
-    // }
+        const activeObject = this.canvas.getActiveObject()
+        this.canvas.getActiveObject() === undefined ? alert('Please select the element to remove') : this.canvas.remove(activeObject);
+    }
 
     changeTypeOfShirt = (event) => {
 
         event.preventDefault()
-
     }
-
-
-    // handleInputImg = (event) => {
-
-    //     // let readerImg
-    //     const file = event.target.files[0]
-    //     //console.log(document.querySelector('input[type=file]').files[0])
-
-    //     //  console.log(file)
-
-    //     // const reader = new FileReader()
-    //     // if (file) {
-    //     //     readerImg = reader.readAsDataURL(file)
-    //     // }
-    //     // Hay que leer img como url
-    // }
 
     saveShirt = () => {
 
@@ -191,11 +153,10 @@ export default class Designer extends Component {
             .catch((err) => console.log('ERROR: ', err))
     }
 
-
     getRandomNum = (min, max) => Math.random() * (max - min) + min
 
-
     handlePositionTextSubmit = (event) => {
+
         event.preventDefault()
         console.log('left: ', this.state.left)
         console.log('top: ', this.state)
@@ -203,8 +164,16 @@ export default class Designer extends Component {
 
     handletextPosition = (event) => {
 
-        this.setState({ top: event.target.value })
+        this.setState({ topText: event.target.value })
     }
+
+    handleImgPosition = (event) => {
+
+        this.setState({ topImg: event.target.value })
+        console.log('-left: ', this.state.leftImg, '- top: ', this.state.topImg)
+
+    }
+
 
     render() {
 
@@ -250,15 +219,23 @@ export default class Designer extends Component {
                             <br />
                             <label>
                                 Posicion del text en la camiseta:
-                                        <select value={this.state.top} onChange={this.handletextPosition}>
+                                        <select value={this.state.topText} onChange={this.handletextPosition}>
                                     <option value={100} name="200">Pecho</option>
                                     <option value={65} name="335">Cintura</option>
                                     <option value={170} name="370">Cadera</option>
                                     <option value={300} name="7">Cadera</option>
                                 </select>
                             </label>
-
-
+                            <br />
+                            <label>
+                                Posicion del logo en la camiseta:
+                                        <select value={this.state.topImg} onChange={this.handleImgPosition}>
+                                    <option value={100} name="200">Pecho</option>
+                                    <option value={65} name="335">Cintura</option>
+                                    <option value={170} name="370">Cadera</option>
+                                    <option value={300} name="7">Cadera</option>
+                                </select>
+                            </label>
 
 
                             <div className="well">
@@ -281,6 +258,8 @@ export default class Designer extends Component {
                                 <br />
                                 <img onClick={this.addLogo} style={{ 'cursor': 'pointer' }} className="img-polaroid" src={manInvisible} alt="invisibleman logo" />
                                 <img onClick={this.addLogo} style={{ 'cursor': 'pointer', 'width': '85px' }} className="img-polaroid" src={michel} alt="miguel anguel pintura logo" />
+                                <Button onClick={this.deleteLogo} variant="dark" type="submit">Borrar logo</Button>
+
                             </Row>
                             <Button onClick={this.saveShirt} variant="dark" type="submit">Crear camiseta personalizada</Button>
                         </Col>

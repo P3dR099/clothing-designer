@@ -1,13 +1,8 @@
 import React, { Component, Fragment } from 'react'
-//import Canvas from '../../custom-designer/canvas/Canvas'
-//import Designer from '../../custom-designer/designer/Designer'
+import Canvas from '../../custom-designer/canvas/Canvas'
 import designerService from '../../../services/designer.service'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
-
-// import Designer from '../../custom-designer/designer/Designer'
-
-import Canvas from '../../custom-designer/canvas/Canvas'
 
 import Container from 'react-bootstrap/Container'
 import ClothingCard from './ClothingCard'
@@ -24,42 +19,71 @@ export default class ViewMyShirts extends Component {
             shirt: {},
             user: this.props.loggedInUser ? this.props.loggedInUser._id : ''
         }
-        this.canvas = window.canvas
+
         this.fabric = window.fabric
         this.designerService = new designerService
     }
 
-    // fabricText = (text, leftText, topText) => {
+    fabricImg = (element, leftImg, topImg, angle, width) => {
 
-    //     const textSample = new this.fabric.Text(text, {
-    //         left: leftText,
-    //         top: topText,
-    //         fontFamily: 'helvetica',
-    //         angle: 0,
-    //         fill: '#000000',
-    //         scaleX: 0.5,
-    //         scaleY: 0.5,
-    //         fontWeight: '',
-    //         hasRotatingPoint: true
-    //     });
-    //     this.canvas.add(textSample);
-    //     this.canvas.item(this.canvas.item.length - 1).hasRotatingPoint = true;
+        const canvas = new this.fabric.Canvas('tcanvas')
+        this.fabric.Image.fromURL(element, (image) => {
+            image.set({
+                left: leftImg,
+                top: topImg,
+                angle: angle,
+                width: width,
+                padding: 10,
+                //  opacity: opacity,
+                hasRotatingPoint: true,
+                // scaleX: 200 / 600,
+                // scaleY: 400 / 800
 
-    // }
+            })
+            // image.scale(this.getRandomNum(1.1, 1.25)).setCoords()
+            canvas.add(image)
+        })
+    }
 
-    componentDidMount = () => {
-        // console.log(this.state)
-        this.getOneShirt()
-        //        this.fabricText(this.state.shirt.text, 100, 100)
+    addLogo = (event) => {
+
+        const { logo } = this.state.shirt
+        const offset = 50;
+        const angle = 0
+        const width = this.fabric.util.getRandomInt(100, 200);
+
+        var opacity = ((min, max) => {
+            return Math.random() * (max - min) + min;
+        })(0.5, 1);
+
+        this.fabricImg(logo, this.state.shirt.leftImg, this.state.shirt.topImg, angle, 100)
+
+        console.log(this.state)
+
 
     }
 
 
+    addColor = () => {
+        const color = document.querySelector('#shirtDiv').style.backgroundColor = this.state.shirt.color
+        this.addLogo()
+    }
+
+
+    componentDidMount = () => {
+        this.getOneShirt()
+    }
+
+
     getOneShirt = () => {
+
         this.designerService.getOneShirt(this.props.match.params.user_id)
             .then(res => {
+
                 this.setState({ shirt: res.data })
-            })  // Puushear a clothes
+                this.addColor()
+                // console.log(this.state.shirt.logo)
+            })
             .catch(err => console.log('Error: ', err))
     }
 
@@ -73,51 +97,17 @@ export default class ViewMyShirts extends Component {
             .catch(err => console.log(err))
     }
 
-    // fabricImg = (element, leftImg, topImg, angle, width) => {
-
-    //     this.fabric.Image.fromURL(element, (image) => {
-    //         image.set({
-    //             left: leftImg,
-    //             top: topImg,
-    //             angle: angle,
-    //             width: width,
-    //             padding: 10,
-    //             //  opacity: opacity,
-    //             hasRotatingPoint: true,
-    //             scaleX: 200 / 600,
-    //             scaleY: 400 / 800
-
-    //         })
-    //         image.scale(this.getRandomNum(1.1, 1.25)).setCoords()
-    //         canvas.add(image)
-    //     })
-    // }
-
-
-
 
     render() {
-        // console.log(this.state)
 
-        // this.fabricText('hola', 100, 100)
-
-        // console.log(this.state.clothes !== undefined ? this.state.clothes.map(el => el.color) : null)
-        // console.log(this.props.match.params.user_id)
         return (
             <Fragment>
                 <Container>
-                    {/* <img src={this.state.shirt.typeOfShirt} style={{ backgroundColor: this.state.shirt.color }} /> */}
-                    <div className='img-container'>
-                        <div id="drawingArea" >
-                            <Canvas id="tcanvas" className="img-responsive" width="200px" height="400px" />
-                            <Card.Img id="tshirtFacing" src={this.state.shirt.typeOfShirt} alt="camiseta de manga corta" />
-                            <img src={this.state.shirt.logo} />
-                        </div>
-                    </div>
-
-
+                    <Designer />
 
                     <Button onClick={this.deleteShirt} variant="dark" type="submit">Delete Shirt!</Button>
+                    <Button onClick={this.addColor} variant="dark" type="submit">Add Logo Shirt!</Button>
+
 
                 </Container>
             </Fragment>
