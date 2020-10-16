@@ -41,7 +41,6 @@ export default class ClothingList extends Component {
         return (
             <Fragment>
                 <Container>
-                    <h1>hey</h1>
                     {this.state.clothes !== undefined ? this.state.clothes.map((el, index) => {
                         return (
                             <Fragment>
