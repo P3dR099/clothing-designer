@@ -33,9 +33,8 @@ router.get('/viewShirt/:shirt_id', (req, res) => {
 
 router.post('/newTshirtCustom', (req, res, next) => {
 
-    const { typeOfShirt } = req.body
 
-    Tshirt.create(req.body, { typeOfShirt, user: req.body.user })
+    Tshirt.saveOne(req.body, req.body.user)
         .then(response => res.json(response))
         .catch(err => console.log(err))
 })

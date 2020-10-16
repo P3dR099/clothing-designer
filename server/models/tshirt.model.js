@@ -5,13 +5,14 @@ const tshirtSchema = new Schema({
 
     typeOfShirt: {
         type: String,
-        required: true
+        default: 'tshirt',
+        required: false
     },
     color: {
         type: String,
-        required: true,
+        required: false,
         minlength: 2,
-        default: 'rgb(250, 239, 147)'
+        default: 'white'
     },
 
     text: {
@@ -30,22 +31,22 @@ const tshirtSchema = new Schema({
         required: true
     },
 
-    leftText: {
+    lefttext: {
+        type: Number,
+        required: true
+    },
+
+    toptext: {
         type: Number,
         required: false
     },
 
-    topText: {
+    leftimg: {
         type: Number,
         required: false
     },
 
-    leftImg: {
-        type: Number,
-        required: false
-    },
-
-    topImg: {
+    topimg: {
         type: Number,
         required: false
     }
