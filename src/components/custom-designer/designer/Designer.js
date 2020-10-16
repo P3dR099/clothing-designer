@@ -13,6 +13,13 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 
+import { SketchPicker } from 'react-color';
+
+import atleti from './img/atleti-icon.png'
+import nike from './img/nike-pek.png'
+import gucci from './img/gucci.png'
+
+
 import designerService from '../../../services/designer.service'
 
 export default class Designer extends Component {
@@ -21,7 +28,7 @@ export default class Designer extends Component {
         this.state = {
             text: '',
             typeOfShirt: tshirt,
-            color: undefined,
+            color: '#fff',
             logo: undefined,
             user: this.props.loggedInUser ? this.props.loggedInUser._id : '',
             leftText: 70,
@@ -95,11 +102,16 @@ export default class Designer extends Component {
         //     });
     }
 
-    changeColor = (event) => {
 
-        this.setState({ color: event })
-        document.querySelector("#shirtDiv").style.backgroundColor = event
-    }
+    handleChangeComplete = (color, event) => {
+
+        this.setState({ color: color.hex });
+
+        document.querySelector("#shirtDiv").style.backgroundColor = this.state.color
+
+        console.log(this.state.color)
+    };
+
 
     handleTshirtText = (event) => {
 
@@ -129,9 +141,12 @@ export default class Designer extends Component {
             return Math.random() * (max - min) + min;
         })(0.5, 1);
 
+        this.setState({ leftImg: leftLogo, topImg: topLogo })
+        console.log(this.state)
+
         this.setState({ logo: element.src })
-        this.fabricImg(element.src, 53, 68, 0, 100)
-        console.log('-left ->', leftLogo, '--- top ->', topLogo)
+        this.fabricImg(element.src, leftLogo, topLogo, 0, 300)
+        console.log('-left ->', this.state.leftImg, '--- top ->', topLogo)
     }
 
     deleteLogo = () => {
@@ -145,22 +160,10 @@ export default class Designer extends Component {
         event.preventDefault()
     }
 
-    saveShirt = () => {
-
-        this.designerService
-            .addNewShirt(this.state)
-            .then((res) => console.log(res))
-            .catch((err) => console.log('ERROR: ', err))
-    }
+    // saveShirt = 
 
     getRandomNum = (min, max) => Math.random() * (max - min) + min
 
-    handlePositionTextSubmit = (event) => {
-
-        event.preventDefault()
-        console.log('left: ', this.state.left)
-        console.log('top: ', this.state)
-    }
 
     handletextPosition = (event) => {
 
@@ -179,7 +182,7 @@ export default class Designer extends Component {
 
         return (
             <Fragment>
-                <Container>
+                <Container style={{ backgroundColor: 'white', width: '100%', marginRight: '0' }}>
                     <Row>
                         <Col xs="auto" md="auto" className="page" id="shirtDiv">
                             <div className='img-container'>
@@ -191,53 +194,17 @@ export default class Designer extends Component {
                         </Col >
 
                         <Col xs="auto" md="auto" className="well">
-                            <ul className="nav">
-                                <li className="color-preview" title="White" style={{ 'backgroundColor': '#fffff' }} onClick={() => this.changeColor('White')} ></li>
-                                <li className="color-preview" title="Gray" style={{ 'backgroundColor': '#f0f0f0' }} onClick={() => this.changeColor('Gray')}></li>
+                            <Row id="avatarlist">
+                                <h3> Añade un logo</h3>
+                                <br />
+                                <br />
+                                <img onClick={this.addLogo} style={{ 'cursor': 'pointer' }} className="img-polaroid" src={manInvisible} alt="invisibleman logo" />
+                                <img onClick={this.addLogo} style={{ 'cursor': 'pointer', 'width': '85px' }} className="img-polaroid" src={michel} alt="miguel anguel pintura logo" />
+                                <img onClick={this.addLogo} style={{ 'cursor': 'pointer', 'width': '85px' }} className="img-polaroid" src={atleti} alt="miguel anguel pintura logo" />
 
-                                <li className="color-preview" title="Heather Orange" style={{ 'backgroundColor': 'Orange' }} onClick={() => this.changeColor('Orange')}></li>
-                                <li className="color-preview" title="Salmon" style={{ 'backgroundColor': '#eead91' }} onClick={() => this.changeColor('Salmon')}></li>
+                                <Button style={{ margin: '5px' }} onClick={this.deleteLogo} variant="dark" type="submit">Borrar logo</Button>
 
-                                <li className="color-preview" title="Dark Chocolate" style={{ 'backgroundColor': '#382d21' }} onClick={() => this.changeColor('rgb(56, 45, 33)')}></li>
-                                <li className="color-preview" title="Citrus Yellow" style={{ 'backgroundColor': '#faef93' }} onClick={() => this.changeColor('rgb(250, 239, 147)')}></li>
-                                <li className="color-preview" title="Avocado" style={{ 'backgroundColor': '#aeba5e' }} onClick={() => this.changeColor('rgb(174, 186, 94)')}>
-                                </li>
-                                <li className="color-preview" title="Kiwi" style={{ 'backgroundColor': '#8aa140' }} onClick={() => this.changeColor('rgb(138, 161, 64)')} ></li>
-                                <li className="color-preview" title="Irish Green" style={{ 'backgroundColor': '#1f6522' }} onClick={() => this.changeColor('rgb(31, 101, 34 )')}>
-                                </li>
-                                <li className="color-preview" title="Scrub Green" style={{ 'backgroundColor': '#13afa2' }} onClick={() => this.changeColor('rgb(19, 175, 162 )')} >
-                                </li>
-                                <li className="color-preview" title="Teal Ice" style={{ 'backgroundColor': '#b8d5d7' }} onClick={() => this.changeColor('rgb( 184, 213, 215)')} >
-                                </li>
-                                <li className="color-preview" title="Heather Sapphire" style={{ 'backgroundColor': '#15aeda' }} onClick={() => this.changeColor('rgb( 21, 174, 218 )')}></li>
-                                <li className="color-preview" title="Sky" style={{ 'backgroundColor': '#a5def8' }} onClick={() => this.changeColor('rgb(165, 222, 248)')} ></li>
-                                <li className="color-preview" title="Antique Sapphire" style={{ 'backgroundColor': '#0f77c0' }} onClick={() => this.changeColor('rgb(15, 119, 192)')}></li>
-                                <li className="color-preview" title="Heather Navy" style={{ 'backgroundColor': '#3469b7' }} onClick={() => this.changeColor('rgb(52, 105, 183)')}></li>
-                                <li className="color-preview" title="Cherry Red" style={{ 'backgroundColor': '#c50404' }} onClick={() => this.changeColor('rgb(197, 4, 4)')}>
-                                </li>
-                            </ul>
-                            <br />
-                            <label>
-                                Posicion del text en la camiseta:
-                                        <select value={this.state.topText} onChange={this.handletextPosition}>
-                                    <option value={100} name="200">Pecho</option>
-                                    <option value={65} name="335">Cintura</option>
-                                    <option value={170} name="370">Cadera</option>
-                                    <option value={300} name="7">Cadera</option>
-                                </select>
-                            </label>
-                            <br />
-                            <label>
-                                Posicion del logo en la camiseta:
-                                        <select value={this.state.topImg} onChange={this.handleImgPosition}>
-                                    <option value={100} name="200">Pecho</option>
-                                    <option value={65} name="335">Cintura</option>
-                                    <option value={170} name="370">Cadera</option>
-                                    <option value={300} name="7">Cadera</option>
-                                </select>
-                            </label>
-
-
+                            </Row>
                             <div className="well">
                                 <Form onSubmit={this.addText}>
                                     <Row style={{ margin: 20 }}>
@@ -246,39 +213,28 @@ export default class Designer extends Component {
                                         <Button variant="dark" type="submit" name="submit">Añadir</Button>
                                     </Row>
                                 </Form>
-
                             </div>
-                            <Row style={{ margin: 20 }}>
-                                <br />
-                                <input name="imageInput" type="file" className="" onChange={this.handleInputImg} />
-                            </Row>
-                            <Row id="avatarlist">
-                                <h3> Añade un logo</h3>
-                                <br />
-                                <br />
-                                <img onClick={this.addLogo} style={{ 'cursor': 'pointer' }} className="img-polaroid" src={manInvisible} alt="invisibleman logo" />
-                                <img onClick={this.addLogo} style={{ 'cursor': 'pointer', 'width': '85px' }} className="img-polaroid" src={michel} alt="miguel anguel pintura logo" />
-                                <Button onClick={this.deleteLogo} variant="dark" type="submit">Borrar logo</Button>
 
-                            </Row>
-                            <Button onClick={this.saveShirt} variant="dark" type="submit">Crear camiseta personalizada</Button>
+
+                            <Row style={{ placeContent: 'center' }} ><SketchPicker color={this.state.color} onChangeComplete={this.handleChangeComplete} />;</Row>
+
+
+                            <Button style={{ margin: '13px' }} onClick={() => {
+                                this.designerService
+                                    .addNewShirt(this.state)
+                                    .then((res) => this.props.history.push('/'))
+                                    .catch((err) => console.log('ERROR: ', err))
+                            }
+
+
+                            } variant="dark" type="submit">Crear camiseta personalizada</Button>
+
                         </Col>
                     </Row>
                 </Container>
 
-                <div className="tab-content">
-                    <div className="tab-pane " id="tab1">
-                        <div className="well">
-                            <h3>Tee Styles</h3>
-                            <select onChange={this.onChangeShirt} id="">
-                                <option value="1">Short Sleeve Shirts</option>
-                                <option value="2">Long Sleeve Shirts</option>
-                                <option value="3">Hoodies</option>
-                                <option value="4">Tank tops</option>
-                            </select>
-                        </div>
-                    </div>
-                </div >
+
+
             </Fragment >
         )
     }

@@ -32,7 +32,7 @@ class Signup extends Component {
         this.authService
             .signup(this.state)
             .then(response => {
-                this.props.sestTheUser(response.data)
+                this.props.setTheUser(response.data)
                 this.props.history.push('/')
             })
             .catch(err => console.log('Error:', { err }))

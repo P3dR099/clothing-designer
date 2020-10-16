@@ -1,5 +1,14 @@
 import React, { Component, Fragment } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, rou } from 'react-router-dom'
+import Container from 'react-bootstrap/Container'
+import Card from 'react-bootstrap/Card'
+import Button from 'react-bootstrap/Button'
+import Col from 'react-bootstrap/Col'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import Row from 'react-bootstrap/esm/Row'
+import background from './pic-back2.jpeg'
+
+import './home.css'
 
 export default class HomePage extends Component {
 
@@ -12,17 +21,19 @@ export default class HomePage extends Component {
 
         return (
             <Fragment>
-                <h1>home!</h1>
-                <br />
-                <Link to="/designer">Diseñador</Link>
-                <br />
-                <Link to="/login">Login</Link>
-                <br />
-                <Link to={`/designer/viewShirt/${this.state.user}`} >View My Shirts</Link>
-                <br />
-                <Link to={`/designer/ClothingList/${this.state.user}`}>Lista de prendas</Link>
+                <Container style={{
+                    background: 'url(' + background + ')', maxWidth: '100%', backgroundColor: 'white',
+                    backgroundSize: '100%',
+                    height: '950px',
+                }}>
+                    <br />
 
-            </Fragment>
+                    <Link to="/designer">
+                        <Button style={{ margin: 10, backgroundColor: 'gray', borderColor: 'gray' }} color="secondary" size="lg" active> Go to Designer</Button>
+                    </Link>
+                    <br />
+                </Container>
+            </Fragment >
         )
     }
 }

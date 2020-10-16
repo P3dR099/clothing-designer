@@ -6,6 +6,8 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import authService from '../../../services/auth.service'
 
+import background from './img/photo-background2.jpg'
+
 
 class Login extends Component {
     constructor(props) {
@@ -40,9 +42,9 @@ class Login extends Component {
 
         return (
 
-            <Container>
+            <Container style={{ maxWidth: '100%', height: '850px', backgroundImage: 'url(' + background + ')', backgroundRepeat: "no-repeat", backgroundSize: '100%' }}>
                 <main>
-                    <Row className="justify-content-center">
+                    <Row className="justify-content-center"  >
                         <Col md={{ span: 5 }}>
                             <h1>Inicio de sesión</h1>
                             <Form onSubmit={this.handleFormSubmit}>

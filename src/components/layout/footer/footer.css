@@ -1,0 +1,24 @@
+.footer {
+    background: #333b3f;
+    color: 	#0c0906;
+    font-size: .6em;
+    text-align: center;
+    padding: 4px;
+    bottom: 0;
+    width: 100%;
+    line-height: 60px;
+    background-color: #3D2B1F;
+    box-shadow: 7px 5px 26px 11px #000;
+    background-color: gray;
+    height: 40px;
+}
+
+
+footer p {
+margin: 0
+}
+
+
+
+
+ 
