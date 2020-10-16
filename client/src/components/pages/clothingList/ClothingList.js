@@ -45,7 +45,7 @@ export default class ClothingList extends Component {
                     {this.state.clothes !== undefined ? this.state.clothes.map((el, index) => {
                         return (
                             <Fragment>
-                                <ClothingCard _id={el._id} imageUrl={el.typeOfShirt} color={el.color} loggedInUser={this.props.loggedInUser} title={'hola'}  {...this.state} />
+                                <ClothingCard _id={el._id} logo={el.logo} imageUrl={el.typeOfShirt} color={el.color} loggedInUser={this.props.loggedInUser} {...this.state} />
                             </Fragment>
                         )
                     }

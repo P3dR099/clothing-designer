@@ -10,7 +10,7 @@ import Canvas from '../../custom-designer/canvas/Canvas'
 
 import './clothingCard.css'
 
-const ClothingCard = ({ _id, title, imageUrl, loggedInUser, user, color }) => {
+const ClothingCard = ({ _id, title, imageUrl, loggedInUser, user, color, logo }) => {
 
 
     return (
@@ -21,7 +21,11 @@ const ClothingCard = ({ _id, title, imageUrl, loggedInUser, user, color }) => {
                         <div id="drawingArea" >
                             <Canvas id="tcanvas" className="img-responsive" width="200px" height="400px" />
                         </div>
-                        <Card.Img id="tshirtFacing" src={imageUrl} alt="camiseta de manga corta" />
+                        <div>
+                            <Card.Img id="tshirtFacing" src={imageUrl} alt="camiseta de manga corta">
+                                {/* <img src={logo}></img> */}
+                            </Card.Img>
+                        </div>
                     </div>
                 </Col >
                 <Card.Body>
@@ -30,7 +34,6 @@ const ClothingCard = ({ _id, title, imageUrl, loggedInUser, user, color }) => {
                     {loggedInUser && loggedInUser._id === user
                         ?
                         <ButtonGroup style={{ width: '100%' }}>
-                            <Button className="btn btn-dark btn-sm" onClick={() => alert('TE LO CURRAS')}>Editar</Button>
                             <Link to={`/designer/viewShirt/${_id}`} className="btn btn-dark btn-sm">Detalles</Link>
                         </ButtonGroup>
                         :
