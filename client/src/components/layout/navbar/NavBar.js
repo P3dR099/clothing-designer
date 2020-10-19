@@ -21,22 +21,16 @@ export default class NavBar extends Component {
             .catch(err => console.log('ERRORR!!:', err))
     }
 
-
-
-
-    // display: flex;
-    // flex - direction: row;
-
-
     render() {
 
-        console.log(this.state)
+        console.log(this.props)
 
         return (
             <Fragment>
-                <Navbar style={{ backgroundColor: '#4e4f44' }}>
+                <Navbar {...this.props} style={{ backgroundColor: '#4e4f44' }}>
                     <Link to="/">
-                        <Navbar.Brand>                         <img style={{ height: 40 }} src={logo}></img>
+                        <Navbar.Brand>
+                            <img style={{ height: 40 }} src={logo}></img>
                         </Navbar.Brand>
                     </Link>
                     <Nav className="mr-auto">

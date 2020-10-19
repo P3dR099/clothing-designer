@@ -1,55 +1,14 @@
-
-html {
-min-height: 100%;
-  position: relative;
-}
-body{ height:100vh; margin:0; }
-
 header{ min-height:50px; background:lightcyan; }
-footer{ min-height:50px; background:#1a120d; }
-
-/* Trick */
-body{ 
-    margin: 0;
-    margin-bottom: 40px;
-  display:flex; 
-  flex-direction:column; 
-}
-
-footer{
-  margin-top:auto;
-}
-
 
  /* html, body, #root, .App {
   height: 100%;
 }  */
 
-.App {
-  text-align: center;
-  height: 100%;
+body {
+    font-weight: 300;
+    font-family: 'Roboto', sans-serif;
 }
 
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+h1 {
+    margin-bottom: 30px;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-
