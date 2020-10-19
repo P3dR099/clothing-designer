@@ -10,16 +10,7 @@ export default class Footer extends Component {
         this.state = { user: this.props.loggedInUser ? this.props.loggedInUser._id : '' }
     }
 
-
-
-
-    // display: flex;
-    // flex - direction: row;
-
-
     render() {
-
-        console.log(this.state)
 
         return (
             <Fragment>

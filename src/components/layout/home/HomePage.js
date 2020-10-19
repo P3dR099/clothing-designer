@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Link, rou } from 'react-router-dom'
+import Signup from '../../pages/signup/Signup'
+
 import Container from 'react-bootstrap/Container'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
@@ -24,13 +26,16 @@ export default class HomePage extends Component {
                 <Container style={{
                     background: 'url(' + background + ')', maxWidth: '100%', backgroundColor: 'white',
                     backgroundSize: '100%',
-                    height: '950px',
+                    height: '600px',
                 }}>
                     <br />
 
-                    <Link to="/designer">
-                        <Button style={{ margin: 10, backgroundColor: 'gray', borderColor: 'gray' }} color="secondary" size="lg" active> Go to Designer</Button>
-                    </Link>
+                    <Row style={{ justifyContent: 'center' }}>
+                        <Signup loggedInUser={this.state.loggedInUser} {...this.props} />
+                        <Link to="/designer">
+                            <Button style={{ margin: 10, backgroundColor: 'gray', borderColor: 'gray' }} color="secondary" size="lg" active> Go to Designer</Button>
+                        </Link>
+                    </Row>
                     <br />
                 </Container>
             </Fragment >
