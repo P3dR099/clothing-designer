@@ -22,14 +22,20 @@ class Signup extends Component {
 
     handleInputChange = e => {
         const { name, value } = e.target
-        console.log('HOLA')
         this.setState({ [name]: value })
     }
 
+    componentDidMount = () => {
+        this.getUser()
+    }
+
     handleFormSubmit = e => {
-
         e.preventDefault()
+        this.componentWillUnmount()
+        this.getUser()
+    }
 
+    getUser = () => {
         this.authService
             .signup(this.state)
             .then(response => {
@@ -44,6 +50,10 @@ class Signup extends Component {
 
 
     handleClose = () => this.setState({ show: false })
+
+    componentWillUnmount = () => {
+        this.getUser()
+    }
 
     render() {
 
