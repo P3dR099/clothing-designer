@@ -26,12 +26,14 @@ export default class HomePage extends Component {
                 <Container style={{
                     background: 'url(' + background + ')', maxWidth: '100%', backgroundColor: 'white',
                     backgroundSize: '100%',
-                    height: '600px',
+                    height: '700px',
                 }}>
                     <br />
 
                     <Row style={{ justifyContent: 'center' }}>
-                        <Signup loggedInUser={this.state.loggedInUser} {...this.props} />
+
+                        {!this.props.loggedInUser && <Signup loggedInUser={this.state.loggedInUser} {...this.props} />}
+
                         <Link to="/designer">
                             <Button style={{ margin: 10, backgroundColor: 'gray', borderColor: 'gray' }} color="secondary" size="lg" active> Go to Designer</Button>
                         </Link>
