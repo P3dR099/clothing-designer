@@ -9,6 +9,7 @@ import Canvas from '../../custom-designer/canvas/Canvas'
 
 import Container from 'react-bootstrap/Container'
 import ClothingCard from './ClothingCard'
+import { Row } from 'react-bootstrap'
 // import Row from 'react-bootstrap/Row'
 // import Modal from 'react-bootstrap/Modal'
 
@@ -41,14 +42,17 @@ export default class ClothingList extends Component {
         return (
             <Fragment>
                 <Container>
-                    {this.state.clothes !== undefined ? this.state.clothes.map((el, index) => {
-                        return (
-                            <Fragment>
-                                <ClothingCard _id={el._id} logo={el.logo} imageUrl={el.typeOfShirt} color={el.color} loggedInUser={this.props.loggedInUser} {...this.state} />
-                            </Fragment>
-                        )
-                    }
-                    ) : null}
+                    <Row>
+                        {this.state.clothes !== undefined ? this.state.clothes.map((el, index) => {
+                            return (
+                                <Fragment>
+                                    <ClothingCard _id={el._id} logo={el.logo} imageUrl={el.typeOfShirt} color={el.color} loggedInUser={this.props.loggedInUser} {...this.state} />
+                                </Fragment>
+                            )
+                        }
+                        ) : null}
+
+                    </Row>
                 </Container>
             </Fragment>
         )
