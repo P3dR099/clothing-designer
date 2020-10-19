@@ -42,27 +42,26 @@ class Login extends Component {
 
         return (
 
-            <Container style={{ maxWidth: '100%', height: '950px', backgroundImage: 'url(' + background + ')', backgroundRepeat: "no-repeat", backgroundSize: '100%' }}>
-                <main>
-                    <Row className="justify-content-center"  >
-                        <Col md={{ span: 5 }}>
-                            <h1>Inicio de sesión</h1>
-                            <Form onSubmit={this.handleFormSubmit}>
-                                <Form.Group>
-                                    <Form.Label>Nombre de usuario</Form.Label>
-                                    <Form.Control type="text" name="username" value={this.state.username} onChange={this.handleInputChange} />
-                                </Form.Group>
+            <Container style={{ maxWidth: '100%', height: '950px', backgroundImage: 'url(' + background + ')', backgroundRepeat: "no-repeat", backgroundSize: 'cover' }}>
+                <Row className="justify-content-center"  >
+                    <Col md={{ span: 5 }}>
+                        <h1>Inicio de sesión</h1>
+                        <Form onSubmit={this.handleFormSubmit}>
+                            <Form.Group>
+                                <Form.Label>Nombre de usuario</Form.Label>
+                                <Form.Control type="text" name="username" value={this.state.username} onChange={this.handleInputChange} />
+                            </Form.Group>
 
-                                <Form.Group>
-                                    <Form.Label>Contraseña</Form.Label>
-                                    <Form.Control type="password" name="password" value={this.state.password} onChange={this.handleInputChange} />
-                                </Form.Group>
+                            <Form.Group>
+                                <Form.Label>Contraseña</Form.Label>
+                                <Form.Control type="password" name="password" value={this.state.password} onChange={this.handleInputChange} />
+                            </Form.Group>
 
-                                <Button variant="dark" type="submit">Acceder</Button>
-                            </Form>
-                        </Col>
-                    </Row>
-                </main>
+                            <Button variant="dark" type="submit">Acceder</Button>
+                        </Form>
+                    </Col>
+                </Row>
+
             </Container>
         )
     }

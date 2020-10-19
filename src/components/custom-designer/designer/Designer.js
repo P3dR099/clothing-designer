@@ -182,21 +182,20 @@ export default class Designer extends Component {
 
         return (
             <Fragment>
-                {/* <Container style={{ backgroundColor: 'white', width: '100%', marginRight: '0' }}> */}
-                <Row>
-                    <Col xs="auto" md="auto" className="page" id="shirtDiv">
-                        <div className='img-container'>
-                            <div id="drawingArea" >
-                                <Canvas id="tcanvas" className="img-responsive" width="200px" height="400px" {...this.props} />
+                <Container style={{ margin: '10%' }}>
+                    <Row style={{ alignItems: 'center' }}>
+                        <Col xs={12} md="auto" className="page" id="shirtDiv">
+                            <div className='img-container'>
+                                <div id="drawingArea" >
+                                    <Canvas id="tcanvas" className="img-responsive" width="200px" height="400px" {...this.props} />
+                                </div>
+                                <img id="tshirtFacing" src={tshirt} alt="camiseta de manga corta"></img>
                             </div>
-                            <img id="tshirtFacing" src={tshirt} alt="camiseta de manga corta"></img>
-                        </div>
-                    </Col >
+                        </Col >
 
-                    <Col xs="auto" md="auto" className="well">
-                        <Row id="avatarlist">
+                        <Col md={4} className="well" id="avatarlist">
+
                             <h3> Añade un logo</h3>
-                            <br />
                             <br />
                             <img onClick={this.addLogo} style={{ 'cursor': 'pointer' }} className="img-polaroid" src={manInvisible} alt="invisibleman logo" />
                             <img onClick={this.addLogo} style={{ 'cursor': 'pointer', 'width': '85px' }} className="img-polaroid" src={michel} alt="miguel anguel pintura logo" />
@@ -204,37 +203,36 @@ export default class Designer extends Component {
 
                             <Button style={{ margin: '5px' }} onClick={this.deleteLogo} variant="dark" type="submit">Borrar logo</Button>
 
-                        </Row>
-                        <div className="well">
-                            <Form onSubmit={this.addText}>
-                                <Row style={{ margin: 20 }}>
-                                    <label htmlFor="field2">Añadir texto</label>
-                                    <input className="span2" id="text-string" type="text" onChange={this.handleTshirtText} value={this.state.value} />
-                                    <Button variant="dark" type="submit" name="submit">Añadir</Button>
-                                </Row>
-                            </Form>
-                        </div>
+
+                            <Container className="well">
+                                <Form onSubmit={this.addText}>
+                                    <Row style={{ margin: 20 }}>
+                                        <label htmlFor="field2">Añadir texto</label>
+                                        <input className="span2" id="text-string" type="text" onChange={this.handleTshirtText} value={this.state.value} />
+                                        <Button variant="dark" type="submit" name="submit">Añadir</Button>
+                                    </Row>
+                                    <Row style={{ placeContent: 'center', margin: '10px', width: '86%' }}>
+
+                                        <SketchPicker color={this.state.color} onChangeComplete={this.handleChangeComplete} />
+                                    </Row>
+                                    <Button style={{ margin: '13px' }} onClick={() => {
+                                        this.designerService
+                                            .addNewShirt(this.state)
+                                            .then((res) => this.props.history.push('/'))
+                                            .catch((err) => console.log('ERROR: ', err))
+                                    }
 
 
-                        <Row style={{ placeContent: 'center' }} ><SketchPicker color={this.state.color} onChangeComplete={this.handleChangeComplete} />;</Row>
+                                    } variant="dark" type="submit">Crear camieta personalizada</Button>
+                                </Form>
+                            </Container>
 
-
-                        <Button style={{ margin: '13px' }} onClick={() => {
-                            this.designerService
-                                .addNewShirt(this.state)
-                                .then((res) => this.props.history.push('/'))
-                                .catch((err) => console.log('ERROR: ', err))
-                        }
-
-
-                        } variant="dark" type="submit">Crear camiseta personalizada</Button>
-
-                    </Col>
-                </Row>
-                {/* </Container> */}
+                        </Col>
 
 
 
+                    </Row>
+                </Container>
             </Fragment >
         )
     }

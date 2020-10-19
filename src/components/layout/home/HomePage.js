@@ -25,8 +25,7 @@ export default class HomePage extends Component {
             <Fragment>
                 <Container style={{
                     background: 'url(' + background + ')', maxWidth: '100%', backgroundColor: 'white',
-                    backgroundSize: '100%',
-                    minHeight: '950px',
+                    minHeight: '950px', backgroundRepeat: 'no-repeat', backgroundSize: 'cover'
                 }}>
                     <br />
 
