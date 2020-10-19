@@ -26,7 +26,7 @@ export default class HomePage extends Component {
                 <Container style={{
                     background: 'url(' + background + ')', maxWidth: '100%', backgroundColor: 'white',
                     backgroundSize: '100%',
-                    minHeight: '850px',
+                    minHeight: '950px',
                 }}>
                     <br />
 

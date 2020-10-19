@@ -42,7 +42,7 @@ class Login extends Component {
 
         return (
 
-            <Container style={{ maxWidth: '100%', height: '850px', backgroundImage: 'url(' + background + ')', backgroundRepeat: "no-repeat", backgroundSize: '100%' }}>
+            <Container style={{ maxWidth: '100%', height: '950px', backgroundImage: 'url(' + background + ')', backgroundRepeat: "no-repeat", backgroundSize: '100%' }}>
                 <main>
                     <Row className="justify-content-center"  >
                         <Col md={{ span: 5 }}>
