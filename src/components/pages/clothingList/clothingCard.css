@@ -5,3 +5,9 @@
     /* height: 630px; */
     position: relative;
 }
+
+#canvasCard {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
