@@ -15,7 +15,7 @@ export default class Footer extends Component {
         return (
             <Fragment>
 
-                <footer className="footer" />
+                <footer className="footer"> <p>{new Date().getFullYear()} Todos los derechos reservados</p> </footer>
 
             </Fragment>
         )

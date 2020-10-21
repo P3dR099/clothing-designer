@@ -37,12 +37,10 @@ export default class ClothingList extends Component {
 
     render() {
 
-        console.log(this.state.clothes)
-        // console.log(this.state.clothes !== undefined ? this.state.clothes.map(el => el.color) : null)
         return (
             <Fragment>
-                <Container>
-                    <Row>
+                <Container style={{ marginBottom: '3%', marginTop: '15%', position: 'relative' }}>
+                    <Row style={{ justifyContent: 'space-between' }}>
                         {this.state.clothes !== undefined ? this.state.clothes.map((el, index) => {
                             return (
                                 <Fragment>

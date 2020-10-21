@@ -16,8 +16,8 @@ const ClothingCard = ({ _id, title, imageUrl, loggedInUser, user, color, logo })
         <Col md={3} sm xs={4} style={{ margin: '20px' }}>
             <Card style={{ alignItems: 'center' }}>
                 <div className='img-container' style={{ 'backgroundColor': color }} >
-                    <div id="drawingArea" >
-                        <Canvas id="tcanvas" className="img-responsive" width="200px" height="400px" />
+                    <div id="canvasCard" >
+                        <Canvas id="tcanvas" className="img-responsive" width="70%" height="70%" />
                     </div>
                     <div>
                         <Card.Img id="tshirtFacing" src={imageUrl} alt="camiseta de manga corta">
