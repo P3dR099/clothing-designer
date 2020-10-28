@@ -43,7 +43,7 @@ class Signup extends Component {
                 this.props.history.push('/')
                 this.handleClose()
             })
-            .catch(err => console.log('Error:', { err }))
+            .catch(err => console.log('Loggeate'))
     }
 
     handleShow = () => this.setState({ show: true })

@@ -20,37 +20,42 @@ const tshirtSchema = new Schema({
         required: false,
     },
 
-    logo: {
+    logoUrl: {
         type: String,
         required: false
     },
 
+    leftText: {
+        type: Number,
+        required: true
+    },
+
+    topText: {
+        type: Number,
+        required: false
+    },
+
+    imgX: {
+        type: Number,
+        required: false
+    },
+    imgY: {
+        type: Number,
+        required: false
+    },
+    scaleImgX: {
+        type: Number,
+        required: true
+    },
+    scaleImgY: {
+        type: Number,
+        required: true
+    },
     user: {
         type: Schema.Types.ObjectId,
         rel: 'User',
         required: true
     },
-
-    lefttext: {
-        type: Number,
-        required: true
-    },
-
-    toptext: {
-        type: Number,
-        required: false
-    },
-
-    leftimg: {
-        type: Number,
-        required: false
-    },
-
-    topimg: {
-        type: Number,
-        required: false
-    }
-
 }, {
     timestamps: true
 })

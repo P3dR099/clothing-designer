@@ -5,44 +5,97 @@ import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
-import Row from 'react-bootstrap/esm/Row'
 import Canvas from '../../custom-designer/canvas/Canvas'
 
 import './clothingCard.css'
 
-const ClothingCard = ({ _id, title, imageUrl, loggedInUser, user, color, logo }) => {
 
-    return (
-        <Col md={3} sm xs={4} style={{ margin: '20px' }}>
-            <Card style={{ alignItems: 'center' }}>
-                <div className='img-container' style={{ 'backgroundColor': color }} >
-                    <div id="canvasCard" >
-                        <Canvas id="tcanvas" className="img-responsive" width="70%" height="70%" />
+export default class ClothingCard extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+        }
+        this.fabric = window.fabric
+        this.canvas = undefined
+        this.x = undefined
+        this.y = undefined
+        this.styles = {
+            // transform: `translateX(10px)`,
+            // width: this.props.imgX,
+            // height: 30
+
+        }
+
+    }
+
+    componentDidMount = () => {
+
+        this.x = window.screen.width
+        this.y = window.screen.height
+
+        document.querySelectorAll('#card-logo').forEach(el => {
+
+            if (this.x > 500) {
+                if (el.naturalWidth > 100) {
+                    el.style.width = `${el.naturalWidth / 3}px`
+                } else {
+                    el.style.width = '40px'
+                    el.style.transform = `translateX(25px) translateY(25px)`
+
+                }
+
+            }
+            else {
+
+                if (el.naturalWidth > 100) {
+                    el.style.width = `20px`
+                    el.style.transform = `translateX(0px) translateY(0px)`
+
+                } else {
+                    el.style.width = '20px'
+                    el.style.transform = `translateX(1px) translateY(1px)`
+                    console.log(el.naturalWidth)
+                }
+            }
+        })
+
+    }
+
+
+
+    render() {
+
+        return (
+            <Col md={3} sm xs={3} style={{ margin: '20px' }}>
+                <Card style={{ alignItems: 'center' }}>
+                    <div className='img-container' style={{ 'backgroundColor': this.props.color }} >
+                        <div id="drawingArea" style={{ overflow: 'hidden' }}>
+
+                            {/* transform: translateX(-81px) translateY(9px) scaleX(1.11428) scaleY(0.87); */}
+                            <img id="card-logo" style={this.styles} src={this.props.logo} alt="logo de camiseta"></img>
+
+                        </div>
+                        <img id="tshirtFacing" src={this.props.imageUrl} alt="camiseta de manga corta"></img>
+
                     </div>
-                    <div>
-                        <Card.Img id="tshirtFacing" src={imageUrl} alt="camiseta de manga corta">
-                        </Card.Img>
-                    </div>
-                </div>
 
-                <Card.Body>
-                    <h4>{title}</h4>
+                    <Card.Body>
+                        <h4>{this.props.title}</h4>
 
-                    {loggedInUser && loggedInUser._id === user
-                        ?
-                        <ButtonGroup style={{ width: '100%' }}>
-                            <Link to={`/designer/viewShirt/${_id}`} className="btn btn-dark btn-sm">Detalles</Link>
-                        </ButtonGroup>
-                        :
-                        <Link to={`/designer/viewShirt/${_id}`}>
-                            <Button variant="dark" size="sm" block>Detalles</Button>
-                        </Link>
-                    }
+                        {this.props.loggedInUser && this.props.loggedInUser._id === this.props.user
+                            ?
+                            <ButtonGroup style={{ width: '100%' }}>
+                                <Link to={`/designer/viewShirt/${this.props._id}`} className="btn btn-dark btn-sm">Detalles</Link>
+                            </ButtonGroup>
+                            :
+                            <Link to={`/designer/viewShirt/${this.props._id}`}>
+                                <Button variant="dark" size="sm" block>Detalles</Button>
+                            </Link>
+                        }
 
-                </Card.Body>
-            </Card>
-        </Col>
-    )
+                    </Card.Body>
+                </Card>
+            </Col>
+        )
+    }
 }
-
-export default ClothingCard
