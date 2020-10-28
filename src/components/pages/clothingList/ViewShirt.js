@@ -3,12 +3,22 @@ import Canvas from '../../custom-designer/canvas/Canvas'
 import designerService from '../../../services/designer.service'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
+import tshirt from '../../custom-designer/img/crewFront.png'
+import { SketchPicker } from 'react-color';
+import manInvisible from '../../custom-designer/img/invisibleman.jpg'
+import michel from '../../custom-designer/img/michel.jpg'
 
+// Reactstrap
 import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Form from 'react-bootstrap/Form'
+
 import ClothingCard from './ClothingCard'
-import Designer from '../../custom-designer/designer/Designer'
+// import Designer from '../../custom-designer/designer/Designer'
 // import Row from 'react-bootstrap/Row'
 // import Modal from 'react-bootstrap/Modal'
+import atleti from '../../custom-designer/designer/img/atleti-icon.png'
 
 
 export default class ViewMyShirts extends Component {
@@ -21,52 +31,31 @@ export default class ViewMyShirts extends Component {
         }
 
         this.fabric = window.fabric
-        this.designerService = new designerService
+        this.designerService = new designerService()
+        this.canvas = undefined
+        this.boxWidth = undefined
+        this.boxHeight = undefined
     }
 
-    fabricText = (text, leftText, topText) => {
+    getRandomNum = (min, max) => Math.random() * (max - min) + min
 
-        const canvas = new this.fabric.Canvas('tcanvas')
-        const textSample = new this.fabric.Text(text, {
-            left: leftText,
-            top: topText,
-            fontFamily: 'Pacifico',
-            angle: 0,
-            fill: '#000000',
-            scaleX: 0.5,
-            scaleY: 0.5,
-            fontWeight: '',
-            hasRotatingPoint: true
-        });
-        console.log(textSample)
-        canvas.add(textSample);
-        canvas.item(canvas.item.length - 1).hasRotatingPoint = true;
-    }
+    fabricImg = (element, imgX, imgY, angle, width) => {
 
-    addText = () => {
-
-        const { text } = this.state.shirt
-        this.fabricText(text, 70, 100)
-    }
-
-    fabricImg = (element, leftImg, topImg, angle, width) => {
-
-        const canvas = new this.fabric.Canvas('tcanvas')
         this.fabric.Image.fromURL(element, (image) => {
             image.set({
-                left: leftImg,
-                top: topImg,
+                left: imgX,
+                top: imgY,
                 angle: angle,
                 width: width,
                 padding: 10,
                 //  opacity: opacity,
                 hasRotatingPoint: true,
-                // scaleX: 200 / 600,
-                // scaleY: 400 / 800
-
+                // scaleX: 50 / 300,
+                // scaleY: 400 / 256
             })
-            // image.scale(this.getRandomNum(1.1, 1.25)).setCoords()
-            canvas.add(image)
+
+            image.scale(this.state.shirt.scaleImgX, this.state.shirt.scaleImgY).setCoords()
+            this.canvas.add(image)
         })
     }
 
@@ -81,22 +70,36 @@ export default class ViewMyShirts extends Component {
             return Math.random() * (max - min) + min;
         })(0.5, 1);
 
-        console.log(this.state.shirt)
+        const { imgX } = this.state.shirt
+        const { imgY } = this.state.shirt
 
-        this.fabricImg(this.state.shirt.logo, 57, 40, angle, 100)
 
+        this.fabricImg(this.state.shirt.logo, imgX, imgY, 0, 300 * 2)
+        console.log(imgX)
         console.log(this.state)
-
-
     }
-
 
     addColor = () => {
         const color = document.querySelector('#shirtDiv').style.backgroundColor = this.state.shirt.color
     }
 
-
     componentDidMount = () => {
+
+        var canvas = document.querySelector('canvas');
+        canvas.style.width = '100%'
+        canvas.style.height = '100%'
+
+        canvas.width = canvas.offsetWidth + 15
+        canvas.height = canvas.width * 2 - 30
+
+        this.boxWidth = canvas.width
+        this.boxHeight = canvas.height
+
+        this.canvas = new this.fabric.Canvas('tcanvas', {
+            hoverCursor: 'pointer',
+            selection: true,
+            selectionBorderColor: 'blue'
+        });
         this.getOneShirt()
     }
 
@@ -105,16 +108,11 @@ export default class ViewMyShirts extends Component {
 
         this.designerService.getOneShirt(this.props.match.params.user_id)
             .then(res => {
-                console.log(res.data)
 
                 this.setState({ shirt: res.data })
                 this.addColor()
                 this.addLogo()
-
-                // console.log(this.state.shirt.logo)
-            }).then(() => {
-
-            }).then(() => this.addText())
+            })
             .catch(err => console.log('Error: ', err))
     }
 
@@ -122,26 +120,65 @@ export default class ViewMyShirts extends Component {
 
         this.designerService.deleteOneShirt(this.props.match.params.user_id)
             .then(res => {
-                console.log('Borrado!: ', res)
-                console.log(this.props.history.push('/'))
+                console.log(this.props.match.history('/'))
+                console.log('BORRADOO!: ', res)
             })
             .catch(err => console.log(err))
     }
-
 
     render() {
 
         return (
             <Fragment>
-                <Container>
-                    <Designer />
+                <Fragment>
+                    <Container>
+                        <Row style={{ alignItems: 'center', marginTop: '3%' }}>
+                            <Col xs={10} lg={4} className="page" id="shirtDiv">
+                                <div className='img-container'>
+                                    <div id="drawingArea" >
+                                        <Canvas id="tcanvas" />
+                                    </div>
+                                    <img id="tshirtFacing" src={tshirt} alt="camiseta de manga corta"></img>
+                                </div>
+                            </Col >
 
-                    <Button onClick={this.deleteShirt} variant="dark" type="submit">Delete Shirt!</Button>
-                    <Button onClick={this.addLogo} variant="dark" type="submit">Delete Shirt!</Button>
-                    {() => this.addLogo()}
+                            <Col xs={12} md={8}>
+                                <Row xs={10} className="well" id="avatarlist">
 
+                                    <Col xs={9} md={4} lg={3}>
+                                        <h3 style={{ padding: '10px' }}>Color de la camiseta</h3>
+                                        <SketchPicker width='80%' style={{ padding: '0px' }}
+                                            color={this.state.color} onChangeComplete={this.handleChangeComplete} />
+                                        <br />
+                                        <br />
 
-                </Container>
+                                    </Col>
+
+                                    <Col>
+                                        <h3> Añade un logo</h3>
+                                        <br />
+                                        <img onClick={this.addLogo} style={{ 'cursor': 'pointer' }} className="img-polaroid" src={manInvisible} alt="invisibleman logo" />
+                                        <img onClick={this.addLogo} style={{ 'cursor': 'pointer', 'width': '85px' }} className="img-polaroid" src={michel} alt="miguel anguel pintura logo" />
+                                        <img onClick={this.addLogo} style={{ 'cursor': 'pointer', 'width': '85px' }} className="img-polaroid" src={atleti} alt="miguel anguel pintura logo" />
+
+                                        <Button style={{ margin: '3px' }} onClick={this.deleteLogo} variant="dark" type="submit">Borrar logo</Button>
+
+                                        <Form onSubmit={this.addText} className="well" style={{ margin: 20 }}>
+
+                                            <label htmlFor="field2">Añadir texto</label>
+                                            <input className="span2" id="text-string" type="text" onChange={this.handleTshirtText} value={this.state.value} />
+                                            <Button variant="dark" type="submit" name="submit">Añadir</Button>
+                                            <Button variant="dark" type="submit" name="submit" onClick={this.viewState}> Click to view state</Button>
+
+                                            <Button style={{ margin: '3px' }} onClick={this.deleteShirt} variant="dark" type="submit">Borrar camiseta personalizada</Button>
+                                            <Button style={{ margin: '3px' }} onClick={this.saveShirt} variant="dark" type="submit">Crear camieta personalizada</Button>
+                                        </Form>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                    </Container>
+                </Fragment >
             </Fragment>
         )
     }
