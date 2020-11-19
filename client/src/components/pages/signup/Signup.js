@@ -1,11 +1,7 @@
 import React, { Component, Fragment } from 'react'
-
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 // import Button from 'react-bootstrap/Button'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 
 import authService from '../../../services/auth.service'
 class Signup extends Component {

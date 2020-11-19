@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import React, { useState, Fragment, Component } from 'react';
+import React, { Fragment, Component } from 'react';
 import authService from '../../../services/auth.service'
 import Image from 'react-bootstrap/Image'
 import logo from './logo-designex.png'

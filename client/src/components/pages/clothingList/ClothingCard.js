@@ -1,31 +1,20 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
-import Canvas from '../../custom-designer/canvas/Canvas'
-
 import './clothingCard.css'
 
 
 export default class ClothingCard extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-        }
+        this.state = {}
         this.fabric = window.fabric
         this.canvas = undefined
         this.x = undefined
         this.y = undefined
-        this.styles = {
-            // transform: `translateX(10px)`,
-            // width: this.props.imgX,
-            // height: 30
-
-        }
-
     }
 
     componentDidMount = () => {
@@ -41,16 +30,13 @@ export default class ClothingCard extends Component {
                 } else {
                     el.style.width = '40px'
                     el.style.transform = `translateX(25px) translateY(25px)`
-
                 }
-
             }
             else {
 
                 if (el.naturalWidth > 100) {
                     el.style.width = `20px`
                     el.style.transform = `translateX(0px) translateY(0px)`
-
                 } else {
                     el.style.width = '20px'
                     el.style.transform = `translateX(1px) translateY(1px)`
@@ -58,10 +44,7 @@ export default class ClothingCard extends Component {
                 }
             }
         })
-
     }
-
-
 
     render() {
 
@@ -70,15 +53,10 @@ export default class ClothingCard extends Component {
                 <Card style={{ alignItems: 'center' }}>
                     <div className='img-container' style={{ 'backgroundColor': this.props.color }} >
                         <div id="drawingArea" style={{ overflow: 'hidden' }}>
-
-                            {/* transform: translateX(-81px) translateY(9px) scaleX(1.11428) scaleY(0.87); */}
                             <img id="card-logo" style={this.styles} src={this.props.logo} alt="logo de camiseta"></img>
-
                         </div>
                         <img id="tshirtFacing" src={this.props.imageUrl} alt="camiseta de manga corta"></img>
-
                     </div>
-
                     <Card.Body>
                         <h4>{this.props.title}</h4>
 
@@ -92,7 +70,6 @@ export default class ClothingCard extends Component {
                                 <Button variant="dark" size="sm" block>Detalles</Button>
                             </Link>
                         }
-
                     </Card.Body>
                 </Card>
             </Col>

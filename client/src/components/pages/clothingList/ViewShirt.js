@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react'
 import Canvas from '../../custom-designer/canvas/Canvas'
 import designerService from '../../../services/designer.service'
 import Button from 'react-bootstrap/Button'
-import Card from 'react-bootstrap/Card'
 import tshirt from '../../custom-designer/img/crewFront.png'
 import { SketchPicker } from 'react-color';
 import manInvisible from '../../custom-designer/img/invisibleman.jpg'
@@ -13,11 +12,6 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
-
-import ClothingCard from './ClothingCard'
-// import Designer from '../../custom-designer/designer/Designer'
-// import Row from 'react-bootstrap/Row'
-// import Modal from 'react-bootstrap/Modal'
 import atleti from '../../custom-designer/designer/img/atleti-icon.png'
 
 
@@ -48,10 +42,7 @@ export default class ViewMyShirts extends Component {
                 angle: angle,
                 width: width,
                 padding: 10,
-                //  opacity: opacity,
                 hasRotatingPoint: true,
-                // scaleX: 50 / 300,
-                // scaleY: 400 / 256
             })
 
             image.scale(this.state.shirt.scaleImgX, this.state.shirt.scaleImgY).setCoords()
@@ -61,27 +52,13 @@ export default class ViewMyShirts extends Component {
 
     addLogo = () => {
 
-        const { logo } = this.state.shirt
-        const offset = 50;
-        const angle = 0
-        const width = this.fabric.util.getRandomInt(100, 200);
-
-        var opacity = ((min, max) => {
-            return Math.random() * (max - min) + min;
-        })(0.5, 1);
-
         const { imgX } = this.state.shirt
         const { imgY } = this.state.shirt
-
-
         this.fabricImg(this.state.shirt.logo, imgX, imgY, 0, 300 * 2)
-        console.log(imgX)
-        console.log(this.state)
     }
 
-    addColor = () => {
-        const color = document.querySelector('#shirtDiv').style.backgroundColor = this.state.shirt.color
-    }
+    addColor = () => { const color = document.querySelector('#shirtDiv').style.backgroundColor = this.state.shirt.color }
+
 
     componentDidMount = () => {
 
@@ -117,7 +94,6 @@ export default class ViewMyShirts extends Component {
     }
 
     deleteShirt = () => {
-
         this.designerService.deleteOneShirt(this.props.match.params.user_id)
             .then(res => {
                 console.log(this.props.match.history('/'))
@@ -164,12 +140,9 @@ export default class ViewMyShirts extends Component {
                                         <Button style={{ margin: '3px' }} onClick={this.deleteLogo} variant="dark" type="submit">Borrar logo</Button>
 
                                         <Form onSubmit={this.addText} className="well" style={{ margin: 20 }}>
-
                                             <label htmlFor="field2">Añadir texto</label>
                                             <input className="span2" id="text-string" type="text" onChange={this.handleTshirtText} value={this.state.value} />
                                             <Button variant="dark" type="submit" name="submit">Añadir</Button>
-                                            <Button variant="dark" type="submit" name="submit" onClick={this.viewState}> Click to view state</Button>
-
                                             <Button style={{ margin: '3px' }} onClick={this.deleteShirt} variant="dark" type="submit">Borrar camiseta personalizada</Button>
                                             <Button style={{ margin: '3px' }} onClick={this.saveShirt} variant="dark" type="submit">Crear camieta personalizada</Button>
                                         </Form>

@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-
 import Designer from './custom-designer/designer/Designer'
 import Home from '../components/layout/home/HomePage'
 import NavBar from '../components/layout/navbar/NavBar'

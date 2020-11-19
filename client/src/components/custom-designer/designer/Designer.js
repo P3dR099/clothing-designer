@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react'
-//import ScripTag from 'react-script-tag'
 import Canvas from '../canvas/Canvas'
 import './designer.css'
 import manInvisible from '../img/invisibleman.jpg'
@@ -9,16 +8,15 @@ import tshirt from '../img/crewFront.png'
 // Reactstrap
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
+import Image from 'react-bootstrap/Image'
+
 import Col from 'react-bootstrap/Col'
+import InputGroup from 'react-bootstrap/InputGroup'
+import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
-
 import { SketchPicker } from 'react-color';
-
 import atleti from './img/atleti-icon.png'
-// import nike from './img/nike-pek.png'
-// import gucci from './img/gucci.png'
-
 import designerService from '../../../services/designer.service'
 
 export default class Designer extends Component {
@@ -179,21 +177,11 @@ export default class Designer extends Component {
         const element = event.target
         const offset = 50;
         const leftLogo = this.fabric.util.getRandomInt(10 + offset, this.boxWidth - 100);
-
         const topLogo = this.fabric.util.getRandomInt(10 + offset, this.boxHeight - 100);
 
-        // const angle = this.fabric.util.getRandomInt(-20, 60);
-        // const width = this.fabric.util.getRandomInt(100, 200);
-
-        var opacity = ((min, max) => {
-            return Math.random() * (max - min) + min;
-        })(0.5, 1);
-
         this.setState({ imgX: leftLogo, imgY: topLogo })
-
         this.setState({ logo: element.src })
         this.fabricImg(element.src, 22, 9, 0, 300)
-
     }
 
     deleteLogo = () => {
@@ -271,25 +259,23 @@ export default class Designer extends Component {
                                 <Col>
                                     <h3> Añade un logo</h3>
                                     <br />
-                                    <img onClick={this.addLogo} style={{ 'cursor': 'pointer' }} className="img-polaroid" src={manInvisible} alt="invisibleman logo" />
-                                    <img onClick={this.addLogo} style={{ 'cursor': 'pointer', 'width': '85px' }} className="img-polaroid" src={michel} alt="miguel anguel pintura logo" />
-                                    <img onClick={this.addLogo} style={{ 'cursor': 'pointer', 'width': '85px' }} className="img-polaroid" src={atleti} alt="miguel anguel pintura logo" />
-
+                                    <Image onClick={this.addLogo} style={{ 'cursor': 'pointer' }} className="img-polaroid" src={manInvisible} alt="invisibleman logo" rounded />
+                                    <Image onClick={this.addLogo} style={{ 'cursor': 'pointer', 'width': '85px' }} className="img-polaroid" src={michel} alt="miguel anguel pintura logo" rounded />
+                                    <Image onClick={this.addLogo} style={{ 'cursor': 'pointer', 'width': '85px' }} className="img-polaroid" src={atleti} alt="miguel anguel pintura logo" rounded />
                                     <Button style={{ margin: '3px' }} onClick={this.deleteLogo} variant="dark" type="submit">Borrar logo</Button>
-
                                     <Form onSubmit={this.addText} className="well" style={{ margin: 20 }}>
 
-                                        <label htmlFor="field2">Añadir texto</label>
-                                        <input className="span2" id="text-string" type="text" onChange={this.handleTshirtText} value={this.state.value} />
-                                        <Button variant="dark" type="submit" name="submit">Añadir</Button>
-
-                                        <Button variant="dark" type="submit" name="submit" onClick={this.viewState}> Click to view state</Button>
-
-                                        <Form.Group>
+                                        <Form.Label style={{ margin: '3px' }} htmlFor="field2">Añadir texto </Form.Label>
+                                        <InputGroup className="mb-3">
+                                            <Form.Control className="span2" id="text-string" type="text" onChange={this.handleTshirtText} value={this.state.value} />
+                                            <InputGroup.Append>
+                                                <Button variant="dark" type="submit" name="submit" >Añadir</Button>
+                                            </InputGroup.Append>
+                                        </InputGroup>
+                                        {/* <Form.Group>
                                             <Form.Label>Imagen (file) {this.state.uploadingImage}</Form.Label>
                                             <Form.Control type="file" name="imageUrl" onChange={this.handleImageUpload} />
-                                        </Form.Group>
-
+                                        </Form.Group> */}
                                         <Button style={{ margin: '3px' }} onClick={this.saveShirt} variant="dark" type="submit">Crear camieta personalizada</Button>
                                     </Form>
                                 </Col>
