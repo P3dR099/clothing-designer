@@ -12,7 +12,6 @@ import Image from 'react-bootstrap/Image'
 
 import Col from 'react-bootstrap/Col'
 import InputGroup from 'react-bootstrap/InputGroup'
-import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import { SketchPicker } from 'react-color';
@@ -115,6 +114,53 @@ export default class Designer extends Component {
         this.boxHeight = canvas.height
     }
 
+    setSizeCanvas = () => {
+        var canvas = document.querySelector('canvas');
+
+        canvas.style.width = '100%'
+        canvas.style.height = '100%'
+
+        canvas.width = canvas.offsetWidth + 15
+        canvas.height = canvas.width * 2 - 30
+
+        this.boxWidth = canvas.width
+        this.boxHeight = canvas.height
+    }
+
+
+    eventsCanvas = (event) => {
+
+        this.canvas.on({
+            'object:modified': (event) => {
+                event.target.opacity = 1;
+
+                this.setState({
+                    imgX: event.target.canvas._activeObject.left,
+                    imgY: event.target.canvas._activeObject.top
+                }, () => {
+                    console.log('state img-x', (this.state.imgX))
+                    console.log('state img-y', (this.state.imgY))
+
+                })
+
+            },
+            'object:scaled': (event) => {
+
+                this.setState({
+                    scaleImgX: event.transform.newScaleX,
+                    scaleImgY: event.transform.newScaleY
+                }, () => {
+                    console.log('scalee img-x', (this.state.scaleImgX))
+                    console.log('scalee img-y', (this.state.scaleImgY))
+
+                })
+
+            },
+
+            //           'object:selected': onObjectSelected,
+            //           'selection:cleared': onSelectedCleared
+        });
+    }
 
     eventsCanvas = (event) => {
 
