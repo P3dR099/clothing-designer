@@ -13,7 +13,7 @@ export default class ClothingList extends Component {
         }
         this.fabric = window.fabric
         this.canvas = undefined
-        this.designerService = new designerService
+        this.designerService = new designerService()
     }
 
     fabricImg = (element, imgX, imgY, angle, width) => {
@@ -27,7 +27,6 @@ export default class ClothingList extends Component {
                 padding: 10,
                 hasRotatingPoint: true,
             })
-
             this.canvas.add(image)
         })
     }
@@ -37,7 +36,6 @@ export default class ClothingList extends Component {
     }
 
     componentDidMount = () => {
-
         this.canvas = new this.fabric.Canvas('tcanvas', {
             hoverCursor: 'pointer',
             selection: true,
@@ -63,8 +61,8 @@ export default class ClothingList extends Component {
                         {this.state.clothes !== undefined ? this.state.clothes.map((el, index) => {
                             return (
                                 <Fragment>
-                                    <ClothingCard key={index} _id={el._id} imgX={el.imgX} imgY={el.imgY} scaleImgX={el.scaleImgX} scaleImgY={el.scaleImgY} logo={el.logo}
-                                        imageUrl={el.typeOfShirt} color={el.color} loggedInUser={this.props.loggedInUser} />
+                                    <ClothingCard key={index} _id={el._id} imgX={el.imgX} imgY={el.imgY} scaleImgX={el.scaleImgX} scaleImgY={el.scaleImgY}
+                                        imageUrl={el.imageUrl} logo={el.logoUrl} typeOfShirt={el.typeOfShirt} color={el.color} loggedInUser={this.props.loggedInUser} />
                                 </Fragment>
                             )
                         }

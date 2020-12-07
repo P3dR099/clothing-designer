@@ -20,20 +20,16 @@ router.get('/viewMyShirts/:user_id', (req, res, next) => {
 
 router.get('/viewShirt/:shirt_id', (req, res) => {
 
-    console.log(req.user)
     if (!mongoose.Types.ObjectId.isValid(req.params.shirt_id)) {
         res.status(400).json({ message: 'Specified id is not valid' })
         return
     }
-
     Tshirt.findById(req.params.shirt_id)
         .then(shirt => res.json(shirt))
         .catch(err => console.log(err))
 })
 
 router.post('/newTshirtCustom', (req, res, next) => {
-
-    console.log(req.body)
 
     Tshirt.create(req.body)
         .then(response => res.json(response))
@@ -43,13 +39,10 @@ router.post('/newTshirtCustom', (req, res, next) => {
 router.delete('/deleteShirt/:shirt_id', (req, res) => {
 
     const shirt_id = req.params.shirt_id
-
     Tshirt.findByIdAndDelete(shirt_id)
         .then(shirtDel => res.json(shirtDel))
         .catch(err => res.json({ err }))
 
 })
-
-
 
 module.exports = router

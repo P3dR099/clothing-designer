@@ -17,6 +17,10 @@ import Form from 'react-bootstrap/Form'
 import { SketchPicker } from 'react-color';
 import atleti from './img/atleti-icon.png'
 import designerService from '../../../services/designer.service'
+import fileService from '../../../services/files.service'
+// import { Spinner } from 'react-bootstrap'
+import Spinner from '../../shared/Spinner/Spinner'
+
 
 export default class Designer extends Component {
     constructor(props) {
@@ -26,7 +30,6 @@ export default class Designer extends Component {
             typeOfShirt: tshirt,  // type of shirt
             color: '#fff',
             logoUrl: '',
-            logo: undefined,
             user: this.props.loggedInUser ? this.props.loggedInUser._id : '',
             leftText: 70,  // eje X text
             topText: 100,  // eje Y text
@@ -34,13 +37,15 @@ export default class Designer extends Component {
             imgY: this.boxWidth,  // eje Y img
             scaleImgX: 100,  // resize eje X img
             scaleImgY: 100,  // resize eje Y img
-            uploadingImage: false
-
+            imageUrl: '',
+            public_id: '',
+            uploadingImage: false,
+            handleDeleteImage: false
         }
-
 
         this.fabric = window.fabric
         this.designerService = new designerService()
+        this.fileService = new fileService()
         this.canvas = undefined
         this.boxWidth = undefined
         this.boxHeight = undefined
@@ -75,13 +80,9 @@ export default class Designer extends Component {
                 padding: 10,
                 //  opacity: opacity,
                 hasRotatingPoint: true,
-                // scaleX: 50 / 300,
-                // scaleY: 400 / 256
-
             })
 
             this.setState({ scaleImgX: 100 / this.canvas.width, scaleImgY: 100 / this.canvas.height })
-
             image.scale(this.getRandomNum(this.state.scaleImgX, this.state.scaleImgY)).setCoords()
             this.canvas.add(image)
         })
@@ -91,75 +92,23 @@ export default class Designer extends Component {
     componentDidMount = () => {
 
         this.setSizeCanvas()
-
         this.canvas = new this.fabric.Canvas('tcanvas', {
             hoverCursor: 'pointer',
             selection: true,
             selectionBorderColor: 'blue'
         });
-
         this.eventsCanvas()
     }
 
     setSizeCanvas = () => {
-        var canvas = document.querySelector('canvas');
 
+        let canvas = document.querySelector('canvas');
         canvas.style.width = '100%'
         canvas.style.height = '100%'
-
         canvas.width = canvas.offsetWidth + 15
         canvas.height = canvas.width * 2 - 30
-
         this.boxWidth = canvas.width
         this.boxHeight = canvas.height
-    }
-
-    setSizeCanvas = () => {
-        var canvas = document.querySelector('canvas');
-
-        canvas.style.width = '100%'
-        canvas.style.height = '100%'
-
-        canvas.width = canvas.offsetWidth + 15
-        canvas.height = canvas.width * 2 - 30
-
-        this.boxWidth = canvas.width
-        this.boxHeight = canvas.height
-    }
-
-
-    eventsCanvas = (event) => {
-
-        this.canvas.on({
-            'object:modified': (event) => {
-                event.target.opacity = 1;
-
-                this.setState({
-                    imgX: event.target.canvas._activeObject.left,
-                    imgY: event.target.canvas._activeObject.top
-                }, () => {
-                    console.log('state img-x', (this.state.imgX))
-                    console.log('state img-y', (this.state.imgY))
-
-                })
-
-            },
-            'object:scaled': (event) => {
-
-                this.setState({
-                    scaleImgX: event.transform.newScaleX,
-                    scaleImgY: event.transform.newScaleY
-                }, () => {
-                    console.log('scalee img-x', (this.state.scaleImgX))
-                    console.log('scalee img-y', (this.state.scaleImgY))
-
-                })
-
-            },
-
-            //           'object:selected': onObjectSelected,
-            //           'selection:cleared': onSelectedCleared
-        });
     }
 
     eventsCanvas = (event) => {
@@ -167,33 +116,22 @@ export default class Designer extends Component {
         this.canvas.on({
             'object:modified': (event) => {
                 event.target.opacity = 1;
-
                 this.setState({
                     imgX: event.target.canvas._activeObject.left,
                     imgY: event.target.canvas._activeObject.top
                 }, () => {
                     console.log('state img-x', (this.state.imgX))
                     console.log('state img-y', (this.state.imgY))
-
                 })
-
             },
             'object:scaled': (event) => {
 
                 this.setState({
                     scaleImgX: event.transform.newScaleX,
                     scaleImgY: event.transform.newScaleY
-                }, () => {
-                    console.log('scalee img-x', (this.state.scaleImgX))
-                    console.log('scalee img-y', (this.state.scaleImgY))
-
                 })
-
-            },
-
-            //           'object:selected': onObjectSelected,
-            //           'selection:cleared': onSelectedCleared
-        });
+            }
+        })
     }
 
     handleChangeComplete = (color, event) => {
@@ -201,7 +139,6 @@ export default class Designer extends Component {
         this.setState({ color: color.hex });
         document.querySelector("#shirtDiv").style.backgroundColor = this.state.color
     };
-
 
     handleTshirtText = (event) => {
 
@@ -226,30 +163,33 @@ export default class Designer extends Component {
         const topLogo = this.fabric.util.getRandomInt(10 + offset, this.boxHeight - 100);
 
         this.setState({ imgX: leftLogo, imgY: topLogo })
-        this.setState({ logo: element.src })
+        this.setState({ logoUrl: element.src })
         this.fabricImg(element.src, 22, 9, 0, 300)
     }
 
     deleteLogo = () => {
 
+        this.setState({ handleDeleteImage: true })
         const activeObject = this.canvas.getActiveObject()
         this.canvas.getActiveObject() === undefined ? alert('Please select the element to remove') : this.canvas.remove(activeObject);
+
+        if (this.state.public_id) {
+            this.fileService
+                .deleteImage(this.state.public_id)
+                .then(res => this.setState({ handleDeleteImage: false }))
+                .catch(err => console.log(err))
+        }
     }
 
     getRandomNum = (min, max) => Math.random() * (max - min) + min
-
     handletextPosition = (event) => this.setState({ topText: event.target.value })
-
     handleImgPosition = (event) => this.setState({ imgY: event.target.value })
-
-    viewState = () => console.log('State: ', this.state)
 
     saveShirt = () => {
         this.designerService
             .addNewShirt(this.state)
             .then((res) => {
-                this.props.history.push('/designer')
-                console.log(res)
+                this.props.history.push('/')
             })
             .catch((err) => console.log('ERROR: ', err))
     }
@@ -262,16 +202,15 @@ export default class Designer extends Component {
     handleImageUpload = e => {
 
         this.setState({ uploadingImage: true })
+        const formData = new FormData();
+        formData.append('imageUrl', e.target.files[0]);
 
-        const uploadData = new FormData()
-        uploadData.append('imageUrl', e.target.files[0])
-
-        this.filesService
-            .uploadImage(uploadData)
-            .then(response => this.setState({
-                ...this.state, imageUrl: response.data.secure_url,
-                uploadingImage: null
-            }))
+        this.fileService
+            .uploadImage(formData)
+            .then(response => {
+                this.setState({ imageUrl: response.data.secure_url, public_id: response.data.public_id, uploadingImage: false })
+                this.fabricImg(this.state.imageUrl, 22, 9, 0, 300)
+            })
             .catch(err => console.log('ERRORRR!', err))
     }
 
@@ -289,19 +228,15 @@ export default class Designer extends Component {
                                 <img id="tshirtFacing" src={tshirt} alt="camiseta de manga corta"></img>
                             </div>
                         </Col >
-
                         <Col xs={12} md={8}>
                             <Row xs={10} className="well" id="avatarlist">
-
                                 <Col xs={9} md={4} lg={3}>
                                     <h3 style={{ padding: '10px' }}>Color de la camiseta</h3>
                                     <SketchPicker width='80%' style={{ padding: '0px' }}
                                         color={this.state.color} onChangeComplete={this.handleChangeComplete} />
                                     <br />
                                     <br />
-
                                 </Col>
-
                                 <Col>
                                     <h3> Añade un logo</h3>
                                     <br />
@@ -309,8 +244,8 @@ export default class Designer extends Component {
                                     <Image onClick={this.addLogo} style={{ 'cursor': 'pointer', 'width': '85px' }} className="img-polaroid" src={michel} alt="miguel anguel pintura logo" rounded />
                                     <Image onClick={this.addLogo} style={{ 'cursor': 'pointer', 'width': '85px' }} className="img-polaroid" src={atleti} alt="miguel anguel pintura logo" rounded />
                                     <Button style={{ margin: '3px' }} onClick={this.deleteLogo} variant="dark" type="submit">Borrar logo</Button>
+                                    <div>{this.state.handleDeleteImage && <Spinner />}</div>
                                     <Form onSubmit={this.addText} className="well" style={{ margin: 20 }}>
-
                                         <Form.Label style={{ margin: '3px' }} htmlFor="field2">Añadir texto </Form.Label>
                                         <InputGroup className="mb-3">
                                             <Form.Control className="span2" id="text-string" type="text" onChange={this.handleTshirtText} value={this.state.value} />
@@ -318,10 +253,10 @@ export default class Designer extends Component {
                                                 <Button variant="dark" type="submit" name="submit" >Añadir</Button>
                                             </InputGroup.Append>
                                         </InputGroup>
-                                        {/* <Form.Group>
-                                            <Form.Label>Imagen (file) {this.state.uploadingImage}</Form.Label>
-                                            <Form.Control type="file" name="imageUrl" onChange={this.handleImageUpload} />
-                                        </Form.Group> */}
+                                        <Form.Group>
+                                            <Form.Label>Imagen (file) {this.state.uploadingImage && <Spinner />} </Form.Label>
+                                            <Form.Control type="file" onChange={this.handleImageUpload} />
+                                        </Form.Group>
                                         <Button style={{ margin: '3px' }} onClick={this.saveShirt} variant="dark" type="submit">Crear camieta personalizada</Button>
                                     </Form>
                                 </Col>

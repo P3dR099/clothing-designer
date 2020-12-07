@@ -32,8 +32,6 @@ class App extends Component {
             .isLoggedIn()
             .then(response => {
                 this.setState({ loggedInUser: response.data })
-                console.log(this.state)
-
             })
             .catch(err => this.setState({ loggedInUser: null }))
 

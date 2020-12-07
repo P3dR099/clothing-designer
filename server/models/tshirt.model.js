@@ -51,6 +51,10 @@ const tshirtSchema = new Schema({
         type: Number,
         required: true
     },
+    imageUrl: {
+        type: String,
+        required: false
+    },
     user: {
         type: Schema.Types.ObjectId,
         rel: 'User',

@@ -54,7 +54,7 @@ export default class ViewMyShirts extends Component {
 
         const { imgX } = this.state.shirt
         const { imgY } = this.state.shirt
-        this.fabricImg(this.state.shirt.logo, imgX, imgY, 0, 300 * 2)
+        this.fabricImg(this.state.shirt.logoUrl || this.state.shirt.imageUrl, imgX, imgY, 0, 300 * 2)
     }
 
     addColor = () => { const color = document.querySelector('#shirtDiv').style.backgroundColor = this.state.shirt.color }
@@ -104,6 +104,7 @@ export default class ViewMyShirts extends Component {
 
     render() {
 
+        console.log(this.state.shirt)
         return (
             <Fragment>
                 <Fragment>

@@ -9,10 +9,9 @@ require('./configs/debugger.config')
 // App
 const express = require('express')
 const app = express()
-const cors = require('cors')
 
 // Configs
-app.use(cors())
+// app.use(cors())
 require('./configs/preformatter.config')(app)
 require('./configs/middleware.config')(app)
 require('./configs/views.configs')(app)

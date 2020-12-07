@@ -53,9 +53,9 @@ export default class ClothingCard extends Component {
                 <Card style={{ alignItems: 'center' }}>
                     <div className='img-container' style={{ 'backgroundColor': this.props.color }} >
                         <div id="drawingArea" style={{ overflow: 'hidden' }}>
-                            <img id="card-logo" style={this.styles} src={this.props.logo} alt="logo de camiseta"></img>
+                            <img id="card-logo" style={this.styles} src={this.props.logo || this.props.imageUrl} alt="logo de camiseta"></img>
                         </div>
-                        <img id="tshirtFacing" src={this.props.imageUrl} alt="camiseta de manga corta"></img>
+                        <img id="tshirtFacing" src={this.props.typeOfShirt} alt="camiseta de manga corta"></img>
                     </div>
                     <Card.Body>
                         <h4>{this.props.title}</h4>

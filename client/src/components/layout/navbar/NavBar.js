@@ -39,7 +39,7 @@ export default class NavBar extends Component {
                             <Nav.Link style={{ color: 'white' }} as={Link} to="/designer">Designer</Nav.Link>
                             {!this.props.loggedInUser && <Nav.Link style={{ color: 'white' }} as={Link} to="/login">Login</Nav.Link>}
                             {this.props.loggedInUser && <div style={{ color: 'white' }} className="nav-link" onClick={this.logoutUser}>Cerrar sesión</div>}
-                            {this.props.loggedInUser && <Nav.Link style={{ color: 'white' }} as={Link} to={`/designer/ClothingList/${this.props.user}`}>Lista de prendas</Nav.Link>}
+                            {this.props.loggedInUser && <Nav.Link style={{ color: 'white' }} as={Link} to={`/designer/clothingList/${this.props.loggedInUser._id}`}>Lista de prendas</Nav.Link>}
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>

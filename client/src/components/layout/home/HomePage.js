@@ -5,7 +5,6 @@ import ParticlesBg from 'particles-bg'
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/esm/Row'
-import background from './pic-back2.jpeg'
 import './home.css'
 
 export default class HomePage extends Component {
